@@ -5,7 +5,6 @@
     <!--WGG top left title, put logo here -->
     <a class="navbar-brand" href="#">Evolve Logo</a>
     <% unless defined? @no_controls %>
-<!-- WGG not sure what is removed here ...
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-primary">
           <span class="sr-only">Toggle Side Navigation</span>
           <i class="icon-th-list"></i>
@@ -15,22 +14,20 @@
           <span class="sr-only">Toggle Top Navigation</span>
           <i class="icon-align-justify"></i>
         </button>
-WGG -->
     <% end %>
   </div>
 
   <% unless defined? @no_controls %>
       <%# we're not showing these on some pages (ex: login). these pages define a no-controls variable %>
       <!-- Collect the nav links, forms, and other content for toggling -->
-<!-- WGG remove the search bar, links and avatar
       <div class="collapse navbar-collapse navbar-collapse-top">
         <div class="navbar-right">
 
           <ul class="nav navbar-nav navbar-left">
-            <li class="cdrop active"><a href="#">Link</a></li>
+            <li class="cdrop active"><a href="#">EvolveSPM</a></li>
 
-            <li class="cdrop"><a href="#">Link</a></li>
-
+            <li class="cdrop"><a href="#">Agent Portal</a></li>
+<!-- WGG ....
             <li class="dropdown cdrop">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -40,6 +37,7 @@ WGG -->
                 <li><a href="#">Separated link</a></li>
               </ul>
             </li>
+WGG -->
           </ul>
 
           <form class="navbar-form navbar-left" role="search">
@@ -60,7 +58,7 @@ WGG -->
               <ul class="dropdown-menu">
 
                 <!-- the first element is the one with the big avatar, add a with-image class to it -->
-<!-- WGG test
+
 
                 <li class="with-image">
                   <div class="avatar">
@@ -79,13 +77,6 @@ WGG -->
             </li>
           </ul>
         </div>
-
-
-
-<!-- WGG test
-
       </div><!-- /.navbar-collapse -->
-<!-- WGG test
-WGG -->
   <% end %>
 </nav>
