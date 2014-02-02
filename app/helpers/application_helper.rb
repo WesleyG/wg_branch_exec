@@ -71,39 +71,40 @@ module ApplicationHelper
                 dashboard: { icon: "icon-dashboard", label: "Dashboard" }
             }
         },
-        ui_lab: {
-            primary: { link: "buttons", icon: "icon-beaker", label: "UI Lab" },
-            items: {
-                buttons: { icon: "icon-hand-up",       label: "Buttons" },
-                general: { icon: "icon-beaker",        label: "General elements" },
-                icons:   { icon: "icon-info-sign",     label: "Icons"},
-                grid:    { icon: "icon-th-large",      label: "Grid"},
-                tables:  { icon: "icon-table",         label: "Tables"},
-                widgets: { icon: "icon-plus-sign-alt", label: "Widgets"},
-            }
-        },
+        # WGG rmemoving menu items
+        #ui_lab: {
+        #    primary: { link: "buttons", icon: "icon-beaker", label: "UI Lab" },
+        #    items: {
+        #        buttons: { icon: "icon-hand-up",       label: "Buttons" },
+        #        general: { icon: "icon-beaker",        label: "General elements" },
+        #        icons:   { icon: "icon-info-sign",     label: "Icons"},
+        #        grid:    { icon: "icon-th-large",      label: "Grid"},
+        #        tables:  { icon: "icon-table",         label: "Tables"},
+        #        widgets: { icon: "icon-plus-sign-alt", label: "Widgets"},
+        #    }
+        #},
         forms: {
-            primary: { link: "forms", icon: "icon-edit", label: "Forms" },
+            primary: { link: "forms", icon: "icon-group", label: "Agencies" },
             items: {
                 forms: { icon: "icon-edit", label: "Form Elements" }
             }
         },
         charts: {
-            primary: { link: "charts", icon: "icon-bar-chart", label: "Charts"},
+            primary: { link: "charts", icon: "icon-sitemap", label: "Internal"},
             items: {
                 charts: { icon: "icon-bar-chart", label: "Charts"}
             }
         },
-        other: {
-            primary: { link: "wizard", icon: "icon-link", label: "Others"},
-            items: {
-                wizard: { icon: "icon-magic", label: "Wizard" },
-                login: { icon: "icon-user", label: "Login Page" },
-                sign_up: { icon: "icon-user", label: "Sign Up Page" },
-                full_calendar: { icon: "icon-calendar", label: "Full Calendar" },
-                error404: { icon: "icon-ban-circle", label: "Error 404 page" },
-            }
-        }
+        #other: {
+        #    primary: { link: "wizard", icon: "icon-link", label: "Others"},
+        #    items: {
+        #        wizard: { icon: "icon-magic", label: "Wizard" },
+        #        login: { icon: "icon-user", label: "Login Page" },
+        #        sign_up: { icon: "icon-user", label: "Sign Up Page" },
+        #        full_calendar: { icon: "icon-calendar", label: "Full Calendar" },
+        #        error404: { icon: "icon-ban-circle", label: "Error 404 page" },
+        #    }
+        #}
     }
   end
 
