@@ -43,8 +43,7 @@ JustGage = function(config) {
     
     // max : int
     // max value
-    max : (config.max) ? config.max : 100,
-    
+    max : (config.max) ? config.max : 9999999,   
     // showMinMax : bool
     // hide or display min and max values
     showMinMax : (config.showMinMax != null) ? config.showMinMax : true,
@@ -105,7 +104,7 @@ JustGage = function(config) {
     // type of refresh animation (linear, >, <,  <>, bounce) 
     refreshAnimationType : (config.refreshAnimationType) ? config.refreshAnimationType : ">"
   };
-  
+
   // overflow values
   if (config.value > this.config.max) this.config.value = this.config.max; 
   if (config.value < this.config.min) this.config.value = this.config.min;

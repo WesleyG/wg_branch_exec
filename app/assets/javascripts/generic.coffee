@@ -194,23 +194,23 @@ $ ->
     gauges.push new JustGage
       id: $(@).attr("id")
       min: 0
-      max: 100
+      max: $(@).attr("data-max")
       title: $(@).attr("data-title")
       #this value is set for demo purpose only. in production you should add it without random, via a data-attribute
-      value: getRandomInt(1,80)
+      value: $(@).attr("data-val") || 50
       label: ""
       levelColorsGradient: false
       showMinMax: showMinMax
       gaugeWidthScale: gaugeWidthScale
-      startAnimationTime: 1000
+      startAnimationTime: 2000
       startAnimationType: ">"
-      refreshAnimationTime: 1000
+      refreshAnimationTime: 50
       refreshAnimationType: refreshAnimationType
       levelColors: [Theme.colors.green, Theme.colors.orange, Theme.colors.red]
 
-  setInterval ->
-    $(gauges).each -> @.refresh(getRandomInt(0,80))
-  , 2500
+  #setInterval ->
+  #  $(gauges).each -> @.refresh(getRandomInt(0,80))
+  #, 2500
 
   $(".easy-pie-chart").each ->
     el = $(@)
