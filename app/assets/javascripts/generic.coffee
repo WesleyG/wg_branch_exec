@@ -197,7 +197,7 @@ $ ->
       max: $(@).attr("data-max")
       title: $(@).attr("data-title")
       #this value is set for demo purpose only. in production you should add it without random, via a data-attribute
-      value: $(@).attr("data-val") || 50
+      value: $(@).attr("data-val") || 0
       label: ""
       levelColorsGradient: false
       showMinMax: showMinMax
@@ -206,7 +206,7 @@ $ ->
       startAnimationType: ">"
       refreshAnimationTime: 50
       refreshAnimationType: refreshAnimationType
-      levelColors: [Theme.colors.green, Theme.colors.orange, Theme.colors.red]
+      levelColors: [Theme.colors.red, Theme.colors.orange, Theme.colors.green]
 
   #setInterval ->
   #  $(gauges).each -> @.refresh(getRandomInt(0,80))
