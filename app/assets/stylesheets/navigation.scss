@@ -21,6 +21,13 @@
   margin-right: 10px;
 }
 
+.menu-logo {
+  @include border-radius(3px);
+  width: 83px;
+  height: 32px;
+  margin-right: 10px;
+}
+
 .navbar-nav > li > a {
   &.dropdown-avatar {
     position: relative;
