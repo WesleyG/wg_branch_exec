@@ -1,0 +1,24 @@
+Sequences to alias
+
+
+this sequence:
+
+open cygwin
+
+$ cd /sites/exec/gswd-vagrant/
+
+$ vagrant up
+
+$ vagrant ssh
+
+$ cd /vagrant/rails_projects/exec_dash/
+
+===
+
+this one:
+
+$ rails s --port=8000
+
+
+
+
