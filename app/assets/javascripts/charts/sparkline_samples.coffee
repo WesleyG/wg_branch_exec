@@ -109,7 +109,7 @@ $ ->
           highlightLineColor: Theme.colors.orange
           spotRadius: 4
           drawNormalOnTop: false
-          tooltipSuffix: " lead processed"
+          tooltipSuffix: " leads processed"
 
       lastmousetime = timenow
       setTimeout mdraw, mrefreshinterval
