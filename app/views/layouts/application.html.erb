@@ -43,7 +43,10 @@
         <ul class="list-inline pull-right sparkline-box">
 
           <li class="sparkline-row">
-            <h4 class="blue"><span>Appointments</span> 1,547</h4>
+            <h4 class="blue"><span>Appointments</span>
+              <!-- WGG bryan's spin # ...<span id="app_num"> 1,547</span></h4> -->
+              1,547</h4>
+              
             <div class="sparkline big" data-color="blue"><!--<%= random_numbers(12).join(",") %>--></div>
           </li>
 
@@ -97,5 +100,50 @@ WGG -->
   </div>
 </div>
 
+<!-- WGG adding Bryan's number spin script 
+
+<script>
+var change_total_due = '1547';
+
+function spinning(id) { 
+    var thisid = '#' + id;
+    var $obj = $(thisid);
+    $obj.css('opacity', '.3');
+    var original = $obj.text();
+
+    var spin = function() {return Math.floor(Math.random() * 10);};
+
+    var spinning = setInterval(function() {
+        $obj.text(function() {
+            var result = '';
+            for (var i = 0; i < original.length; i++) {
+                result += spin().toString();}
+            return result;});
+    }, 50);
+
+    var done = setTimeout(function() {
+        clearInterval(spinning);
+      //$obj.text('$'+change_total_due.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")).css('opacity', '1');
+
+      $obj.text(change_total_due).css('opacity', '1');
+    
+}, 2000);
+}
+
+
+$( window ).load(function() {
+    spinning('app_num');
+
+
+});
+
+</script>
+WGG end of Bryan's script -->
+
+
+
 </body>
 </html>
+
+
+

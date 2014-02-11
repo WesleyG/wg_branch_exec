@@ -17,8 +17,10 @@ WGG -->
 WGG -->
 
 <!-- WGG adding Guages -->
-
+<div class="col-md-9">
+<div class="box-content padded">
 <div class="box">
+
   <div class="box-header"><span class="title">Marketplace</span></div>
   <div class="box-content padded" style="text-align: center">
 <!-- WGG removing    <div class="justgage" data-title="Normal" id="<%= random_string %>"></div>
@@ -45,21 +47,49 @@ WGG -->
 WGG -->    
   </div>
 </div>
+</div>
+</div>
+</div>
 
 <!-- WGG end of adding Guages -->
 
 <!-- WGG start of table -->
+
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-9">
+    <div class="box-content-padded">
+
     <div class="box">
-      <div class="box-header"><span class="title">Data Tables</span></div>
+      <div class="box-header"><span class="title">Churn Report</span></div>
       <div class="box-content">
+        <div class="box-content-padded">
         <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+        </div>
       </div>
     </div>
   </div>
+  </div>
 </div>
 
+
+<!-- WGG
+  <% if false %>
+  <div class="col-md-9">
+    <div class="box-content padded">
+      <div calss="box">
+        <div class="box-header"><span class="title">Churn Report</span>
+        </div>
+
+        <div class="box-content">
+          <div class="row">
+          <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+          </div>
+       </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+WGG -->
 
 <!-- WGG charts -->
   <div class="col-md-9">
@@ -73,6 +103,7 @@ WGG -->
   <% end %>
 WGG -->
 
+<!-- WGG
 <div class="box">
   <div class="box-header"><span class="title">Realtime Lead Monitoring</span></div>
   <div class="box-content padded">
@@ -82,9 +113,13 @@ WGG -->
         <div class="spark-pie"></div>
       </div>
 WGG -->
+
+<!-- WGG removing heart rate chart
       <div class="col-md-12">
         <div class="spark-mouse"></div>
       </div>
+-->
+
 <!-- WGG removing other charts
       <div class="col-md-4">
         <div class="spark-composite"></div>
@@ -104,12 +139,14 @@ WGG -->
 <!-- WGG removing other charts, note the following /div....
         </div>
 WGG -->
+
+<!-- WGG
       </div>
     </div>
 
   </div>
 </div>
-
+WGG -->
 
 <!-- WGG html comment was not enough here had to add the below if false and end
 <% if false %>
