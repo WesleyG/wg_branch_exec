@@ -22,3 +22,6 @@ $ rails s --port=8000
 
 
 
+from darby:
+
+in config/environments/development.rb  # comment out the last item to stop debugging assets

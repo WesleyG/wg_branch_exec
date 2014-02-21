@@ -208,9 +208,9 @@ $ ->
       refreshAnimationType: refreshAnimationType
       levelColors: [Theme.colors.red, Theme.colors.orange, Theme.colors.green]
 
-  #setInterval ->
-  #  $(gauges).each -> @.refresh(getRandomInt(0,80))
-  #, 2500
+  setInterval ->
+    $(gauges).each -> @.refresh(223)
+  , 2500
 
   $(".easy-pie-chart").each ->
     el = $(@)
