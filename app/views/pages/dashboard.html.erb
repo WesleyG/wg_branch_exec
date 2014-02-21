@@ -6,7 +6,7 @@
   </div>
 <% end %> # WGG added
 WGG -->
-
+</div>
 <!-- WGG removing original chart
 <% if false %> # WGG added
   <div class="col-md-9">
@@ -17,41 +17,35 @@ WGG -->
 WGG -->
 
 <!-- WGG adding Guages -->
-<div class="col-md-9">
-<div class="box-content padded">
 <div class="box">
-
   <div class="box-header"><span class="title">Marketplace</span></div>
-  <div class="box-content padded" style="text-align: center">
-<!-- WGG removing    <div class="justgage" data-title="Normal" id="<%= random_string %>"></div>
-    <div class="justgage" data-title="No labels" data-labels="false" id="<%= random_string %>"></div>
-WGG -->
-    <div class="justgage" 
-      data-title="Continuing Subscribers" 
-      data-gauge-width-scale="0.3" 
-      data-labels="true" 
-      data-gauge-Color="#edebeb"
-      id="gauge"
-      data-val="223"
-      data-max="250"
-    ></div>    
+    <div class="box-content padded" style="text-align: center">
+      <!-- WGG removing    <div class="justgage" data-title="Normal" id="<%= random_string %>"></div>
+      <div class="justgage" data-title="No labels" data-labels="false" id="<%= random_string %>"></div>
+      WGG -->
+        <div class="justgage" 
+        data-title="New Subscribers" 
+        data-gauge-width-scale="0.3" 
+        data-labels="true" 
+        data-gauge-Color="#edebeb"
+        data-val="223"
+        data-max="450"
+        ></div>    
 
-      <div class="justgage" 
-      data-title="New Subscribers" 
-      data-gauge-width-scale="0.3" 
-      data-labels="true" 
-      data-gauge-Color="#edebeb"
-      id="gauge"
-      data-val="223"
-      data-max="250"
-    ></div>    
-<!-- WGG removing
-    <div class="justgage" data-title="Custom Animation" data-animation-type="bounce" id="<%= random_string %>"></div>
-WGG -->    
-  </div>
-</div>
-</div>
-</div>
+        <div class="justgage" 
+        data-title="Continuing Subscribers" 
+        data-gauge-width-scale="0.3" 
+        data-labels="true" 
+        data-gauge-Color="#edebeb"
+        id="2"
+        data-val="1223"
+        data-max="1450"
+        ></div>    
+
+      <!-- WGG removing
+      <div class="justgage" data-title="Custom Animation" data-animation-type="bounce" id="<%= random_string %>"></div>
+      WGG -->    
+    </div>
 </div>
 
 <!-- WGG end of adding Guages -->
@@ -61,16 +55,15 @@ WGG -->
 <div class="row">
   <div class="col-md-9">
     <div class="box-content-padded">
-
-    <div class="box">
-      <div class="box-header"><span class="title">Churn Report</span></div>
-      <div class="box-content">
-        <div class="box-content-padded">
-        <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+      <div class="box">
+        <div class="box-header"><span class="title">Churn Report</span></div>
+        <div class="box-content">
+          <div class="box-content-padded">
+            <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </div>
 
