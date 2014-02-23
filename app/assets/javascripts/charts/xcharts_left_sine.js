@@ -12,9 +12,9 @@ $(function(){
             {
                 "className": ".pizza",
                 "data": [
-                    { "x": "2014-01-01", "y": 223},
-                    { "x": "2014-02-01", "y": 475},
-                    { "x": "2014-03-01", "y": 0 },
+                    { "x": "2014-01-01", "y": 3076},
+                    { "x": "2014-02-01", "y": 3849},
+                    { "x": "2014-03-01", "y": 5282 },
                     { "x": "2014-04-01", "y": 0 },
                     { "x": "2014-05-01", "y": 0 },
                     { "x": "2014-06-01", "y": 0 },
@@ -30,8 +30,8 @@ $(function(){
         ]
     };
     var opts = {
-        paddingLeft:25,
-        paddingRight: 0,
+        paddingLeft:35,
+        paddingRight: 25,
         axisPaddingTop: 5,
         axisPaddingLeft: 5,
         dataFormatX: function (x) { return d3.time.format('%Y-%m-%d').parse(x); },
