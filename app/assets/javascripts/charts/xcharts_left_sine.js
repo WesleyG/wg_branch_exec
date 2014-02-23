@@ -12,24 +12,31 @@ $(function(){
             {
                 "className": ".pizza",
                 "data": [
-                    { "x": "2012-11-05", "y": 6 },
-                    { "x": "2012-11-06", "y": 6 },
-                    { "x": "2012-11-07", "y": 8 },
-                    { "x": "2012-11-08", "y": 3 },
-                    { "x": "2012-11-09", "y": 4 },
-                    { "x": "2012-11-10", "y": 9 },
-                    { "x": "2012-11-11", "y": 6 }
+                    { "x": "2014-01-01", "y": 223},
+                    { "x": "2014-02-01", "y": 475},
+                    { "x": "2014-03-01", "y": 0 },
+                    { "x": "2014-04-01", "y": 0 },
+                    { "x": "2014-05-01", "y": 0 },
+                    { "x": "2014-06-01", "y": 0 },
+                    { "x": "2014-07-01", "y": 0 },
+                    { "x": "2014-08-01", "y": 0 },
+                    { "x": "2014-09-01", "y": 0 },
+                    { "x": "2014-10-01", "y": 0 },
+                    { "x": "2014-11-01", "y": 0 },
+                    { "x": "2014-12-01", "y": 0 }
+
                 ]
             }
         ]
     };
     var opts = {
-        paddingLeft:15,
+        paddingLeft:25,
         paddingRight: 0,
         axisPaddingTop: 5,
         axisPaddingLeft: 5,
         dataFormatX: function (x) { return d3.time.format('%Y-%m-%d').parse(x); },
-        tickFormatX: function (x) { return d3.time.format('%a')(x); },
+        tickFormatX: function (x) { return d3.time.format('%m-%Y')(x); },
+
         mouseover: function (d, i) {
             var pos = $(this).offset();
             $(tt).text(d3.time.format('%A')(d.x) + ': ' + d.y)
