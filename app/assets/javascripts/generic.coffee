@@ -218,7 +218,8 @@ $ ->
       lineWidth: 10
       size: 150
       lineCap: "square"
-      barColor: Theme.colors[el.data("color")] || Theme.colors.red
+      # barColor: Theme.colors[el.data("color")] || Theme.colors.red
+      barColor: Theme.colors.red      
       scaleColor: Theme.colors.gray
       animate: 1000
 
@@ -241,9 +242,9 @@ $ ->
     barColor: (percent) ->
       "rgb(" + Math.round(200 * percent/100) + ", " + Math.round(200 * (1-percent/100)) + ", 0)"
 
-  setInterval ->
-    $(".easy-pie-chart, .easy-pie-chart-percent").each ->
-      val = getRandomInt(0,80)
-      $(@).data("easyPieChart").update(val)
-      $(@).find("span").text("#{val}%")
-  , 2500
+#  setInterval ->
+#   $(".easy-pie-chart, .easy-pie-chart-percent").each ->
+#      val = getRandomInt(0,80)
+#      $(@).data("easyPieChart").update(val)
+#      $(@).find("span").text("#{val}%")
+#  , 2500
