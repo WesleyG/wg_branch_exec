@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def current_link
-    root_path = "/pages/"
+    root_path = "/demo/"
     current_route = request.path.sub(root_path, "").split("/") # pages/dashboard/stats.html -> ['dashboard', 'stats.html']
     return current_route.first, current_route.last.split(".").first
   end

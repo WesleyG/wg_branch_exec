@@ -3,27 +3,26 @@ ExecDash::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'pages#root'
+  root 'demo#root'
 
-  resources :pages do
+  resources :demo do
     collection do
-      get 'dashboard/dashboard.html' => 'pages#dashboard', as: 'dashboard'
-      get 'ui_lab/buttons.html' => 'pages#buttons'
-      get 'ui_lab/general.html' => 'pages#general'
-      get 'ui_lab/icons.html' => 'pages#icons'
-      get 'ui_lab/grid.html' => 'pages#grid'
-      get 'ui_lab/tables.html' => 'pages#tables'
-      get 'ui_lab/widgets.html' => 'pages#widgets'
-      get 'forms/forms.html' => 'pages#forms'
-      get 'charts/charts.html' => 'pages#charts'
-      get 'other/wizard.html' => 'pages#wizard'
-      get 'other/login.html' => 'pages#login'
-      get 'other/sign_up.html' => 'pages#sign_up'
-      get 'other/full_calendar.html' => 'pages#full_calendar'
-      get 'other/error404.html' => 'pages#error404'
+      get 'dashboard/dashboard.html' => 'demo#dashboard', as: 'dashboard'
+      get 'ui_lab/buttons.html' => 'demo#buttons'
+      get 'ui_lab/general.html' => 'demo#general'
+      get 'ui_lab/icons.html' => 'demo#icons'
+      get 'ui_lab/grid.html' => 'demo#grid'
+      get 'ui_lab/tables.html' => 'demo#tables'
+      get 'ui_lab/widgets.html' => 'demo#widgets'
+      get 'forms/forms.html' => 'demo#forms'
+      get 'charts/charts.html' => 'demo#charts'
+      get 'other/wizard.html' => 'demo#wizard'
+      get 'other/login.html' => 'demo#login'
+      get 'other/sign_up.html' => 'demo#sign_up'
+      get 'other/full_calendar.html' => 'demo#full_calendar'
+      get 'other/error404.html' => 'demo#error404'
     end
   end
-
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
