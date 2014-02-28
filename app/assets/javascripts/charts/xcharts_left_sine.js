@@ -39,7 +39,7 @@ $(function(){
 
         mouseover: function (d, i) {
             var pos = $(this).offset();
-            $(tt).text(d3.time.format('%A')(d.x) + ': ' + d.y)
+            $(tt).text(d3.time.format('%B')(d.x) + ': ' + d.y)
                 .css({top: topOffset + pos.top, left: pos.left + leftOffset})
                 .show();
         },

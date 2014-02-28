@@ -1,61 +1,25 @@
 <div class="row">
-<!-- WGG html comment was not enough here had to add the below if false and end
-<% if false %> # WGG added
-  <div class="col-md-3">
-    <%= render 'partials/action_nav_normal' %>
-  </div>
-<% end %> # WGG added
-WGG -->
 </div>
-<!-- WGG removing original chart
-<% if false %> # WGG added
-  <div class="col-md-9">
-    <%= render 'partials/big_chart' %>
-  </div>
-</div>
-<% end %>
-WGG -->
 
-<!-- WGG adding Guages -->
+<!-- WGG end of adding Guages -->
 <div class="box">
-  <div class="box-header"><span class="title">Marketplace</span></div>
-    <div class="box-content padded" style="text-align: center">
-      <!-- WGG removing    <div class="justgage" data-title="Normal" id="<%= random_string %>"></div>
-      <div class="justgage" data-title="No labels" data-labels="false" id="<%= random_string %>"></div>
-      WGG -->
-        <div class="justgage" 
-        data-title="New Subscribers" 
-        data-gauge-width-scale="0.3" 
-        data-labels="true" 
-        data-gauge-Color="#edebeb"
-        data-val="223"
-        data-max="450"
-        id="1"
-        ></div>    
-
-        <div class="justgage" 
-        data-title="Continuing Subscribers" 
-        data-gauge-width-scale="0.3" 
-        data-labels="true" 
-        data-gauge-Color="#edebeb"
-        id="2"
-        data-val="1223"
-        data-max="1450"
-        ></div>    
-
-      <!-- WGG removing
-      <div class="justgage" data-title="Custom Animation" data-animation-type="bounce" id="<%= random_string %>"></div>
-      WGG -->
-    </div>
+  <div class="box-header"><span class="title">Marketplace and Medicare</span></div>
+  <div class="box-content padded">
+    <div class="sine-chart" style="height: 300px" id="xchart-sine"></div>
+  </div>
 </div>
 
-    <div class="box">
-      <div class="box-header"><span class="title">Annual Sales Charts</span></div>
-      <div class="box-content padded">
-        <div class="xcharts-line-dotted" style="width: 100%; height: 300px"></div>
-      </div>
-    </div>
 
+
+<!-- KO removing Xcharts 
+<div class="box">
+  <div class="box-header"><span class="title">Annual Sales Charts</span></div>
+    <div class="box-content padded">
+      <div class="xcharts-line-dotted" style="width: 100%; height: 300px"></div>
+    </div>
+</div>
+-->
+<!-- Kent & Kyle adding Google Geochart -->
 <div class="box">
   <div class="box-header"><span class="title">Geochart</span></div>
     <div class="box-content padded" style="text-align: center" >
@@ -125,6 +89,7 @@ WGG -->
           region: 'US',
           resolution: 'provinces',
           colorAxis: {colors: ['#FFFFFF', '#0D4878']}
+          //colorAxis: {colors: ['#F6FF00', '#FF0022']}
         };
         //options['region'] = 'US';
         //options['colors'] = ['#FFFFFF', '#0D4878'];
@@ -133,9 +98,6 @@ WGG -->
 
         var chart = new google.visualization.GeoChart(document.getElementById('chart_div'))
         chart.draw(data, options);
-        //var container = document.getElementById('map_canvas');
-        //var geomap = new google.visualization.GeoMap(container);
-        //geomap.draw(data, options);
       };
       </script>
     </head>
@@ -145,15 +107,43 @@ WGG -->
     </body>
     </div>
 </div>
-<!-- WGG end of adding Guages -->
-<div class="box">
-  <div class="box-header"><span class="title">Marketplace and Medicare</span></div>
-  <div class="box-content padded">
-    <div class="sine-chart" style="height: 300px" id="xchart-sine"></div>
-  </div>
-</div>
-<!-- WGG start of table -->
+<!-- Kent end of adding Google Geomap -->
 
+<!-- WGG adding Gauges -->
+<div class="box">
+  <div class="box-header"><span class="title">Marketplace</span></div>
+    <div class="box-content padded" style="text-align: center">
+      <!-- WGG removing    <div class="justgage" data-title="Normal" id="<%= random_string %>"></div>
+      <div class="justgage" data-title="No labels" data-labels="false" id="<%= random_string %>"></div>
+      WGG -->
+        <div class="justgage" 
+        data-title="New Subscribers" 
+        data-gauge-width-scale="0.3" 
+        data-labels="true" 
+        data-gauge-Color="#edebeb"
+        data-val="223"
+        data-max="450"
+        id="1"
+        ></div>    
+
+        <div class="justgage" 
+        data-title="Continuing Subscribers" 
+        data-gauge-width-scale="0.3" 
+        data-labels="true" 
+        data-gauge-Color="#edebeb"
+        id="2"
+        data-val="1223"
+        data-max="1450"
+        ></div>    
+
+      <!-- WGG removing
+      <div class="justgage" data-title="Custom Animation" data-animation-type="bounce" id="<%= random_string %>"></div>
+      WGG -->
+    </div>
+</div>
+<!-- WGG end of adding Gauges -->
+
+<!-- WGG start of Data Table -->
 <div class="row">
   <div class="col-md-12">
     <div class="box-content-padded">
@@ -168,121 +158,10 @@ WGG -->
     </div>
   </div>
 </div>
+<!-- WGG end of Data Table -->
 
-
-<!-- WGG
-  <% if false %>
-  <div class="col-md-9">
-    <div class="box-content padded">
-      <div calss="box">
-        <div class="box-header"><span class="title">Churn Report</span>
-        </div>
-
-        <div class="box-content">
-          <div class="row">
-          <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
-          </div>
-       </div>
-      </div>
-    </div>
-  </div>
-  <% end %>
-WGG -->
-
-<!-- WGG charts -->
+<!-- WGG Enrollment Chart -->
   <div class="box">
     <%= render 'partials/enrollment_chart' %>
   </div>
-<!-- WGG removing commission chart
-  <% if false %>
-  <div class="col-md-9">
-    <%= render 'partials/commission_chart' %>
-  </div>
-  <% end %>
-WGG -->
-
-<!-- WGG
-<div class="box">
-  <div class="box-header"><span class="title">Realtime Lead Monitoring</span></div>
-  <div class="box-content padded">
-    <div class="row separate-sections">
-<!-- WGG removing pie chart
-      <div class="col-md-4">
-        <div class="spark-pie"></div>
-      </div>
-WGG -->
-
-<!-- WGG removing heart rate chart
-      <div class="col-md-12">
-        <div class="spark-mouse"></div>
-      </div>
--->
-
-<!-- WGG removing other charts
-      <div class="col-md-4">
-        <div class="spark-composite"></div>
-      </div>
-
-      <div class="col-md-2 separate-sections text-center">
-        <div class="sparkline big"><!--<%= random_numbers(12).join(",") %>-->
-<!-- WGG removing other charts, note the following /div....
-        </div>
-        <div class="sparkline big" data-color="blue"><!--<%= random_numbers(12).join(",") %>-->
-<!-- WGG removing other charts, note the following /div....
-        </div>
-        <div class="sparkline big" data-color="orange"><!--<%= random_numbers(12).join(",") %>-->
-<!-- WGG removing other charts, note the following /div....
-        </div>
-        <div class="sparkline big" data-color="green"><!--<%= random_numbers(12).join(",") %>-->
-<!-- WGG removing other charts, note the following /div....
-        </div>
-WGG -->
-
-<!-- WGG
-      </div>
-    </div>
-
-  </div>
-</div>
-WGG -->
-
-<!-- WGG html comment was not enough here had to add the below if false and end
-<% if false %>
-<div class="row">
-  <div class="col-md-6">
-    <div class="box">
-      <div class="box-header">
-        <div class="title">Full calendar</div>
-      </div>
-
-      <div class="box-content">
-        <div id="calendar"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-6">
-    <div class="box">
-      <div class="box-header">
-        <span class="title">News with avatars (scrollable box)</span>
-        <ul class="box-toolbar">
-          <li><span class="label label-blue">178</span></li>
-        </ul>
-      </div>
-      <div class="box-content scrollable" style="height: 552px; overflow-y: auto">
-        <%= render 'partials/news_with_icons' %>
-        <%= render 'partials/news_with_icons' %>
-        <%= render 'partials/news_with_icons' %>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <%= render 'partials/activity' %>
-  </div>
-</div>
-
-<% end %> # WGG added
-WGG -->
+<!-- WGG end of Enrollment Chart -->
