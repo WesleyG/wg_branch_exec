@@ -22,14 +22,14 @@
     background: #A1BA3B;
     @include border-radius(4px);
     border: 1px solid #A1BA3B;
-    height: 32px;
-    width: 32px;
+    height: 22px;
+    width: 22px;
     text-align: center;
     @include box-sizing(border-box);
 
     i {
       color: white;
-      line-height: 29px;
+      line-height: 22px;
     }
   }
 
@@ -38,14 +38,14 @@
     background: #CD605D;
     @include border-radius(4px);
     border: 1px solid #CD605D;
-    height: 32px;
-    width: 32px;
+    height: 22px;
+    width: 22px;
     text-align: center;
     @include box-sizing(border-box);
 
     i {
       color: white;
-      line-height: 29px;
+      line-height: 22px;
     }
   }
 
