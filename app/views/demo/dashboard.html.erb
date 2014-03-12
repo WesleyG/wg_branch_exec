@@ -1,19 +1,64 @@
+<!-- WGG first row -->
 <div class="row">
+<!-- WGG double line chart -->
+  <div class="col-md-5">
+    <div class="box">
+      <div class="box-header"><span class="title">Marketplace and Medicare</span></div>
+      <div class="box-content padded">
+        <div class="sine-chart" style="height: 300px" id="xchart-sine"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-1">
+    <div class="box">
+      <div class="box-header"><span class="title">Marketplace and Medicare Legend</span></div>
+      <div class="box-content padded">
+        <div>
+          <h6>Medicare</h6>
+            <i class="icon-circle" style="color:#3880AA"></i> 2014 New Enrollments       
+            <br>
+            <i class="icon-circle" style="color:#83C37D"></i> 2013 New Enrollments
+            <br>
+          <h6>Marketplace</h6>
+            <i class="icon-circle" style="color:#F26522"></i> 2014 Cumulative Enrollments
+        </div>  
+      </div>
+     </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="box">
+      <%= render 'partials/enrollment_chart' %>
+    </div>
+  </div>
 </div>
 
-<!-- WGG Enrollment Chart -->
-  <div class="box">
-    <%= render 'partials/enrollment_chart' %>
+<!-- WGG second row -->
+<div class="row">
+<!-- WGG start of Data Table -->
+  <div class="col-md-6">
+    <div class="box-content-padded">
+      <div class="box">
+        <div class="box-header"><span class="title">Churn Report</span></div>
+        <div class="box-content">
+          <div class="box-content-padded">
+            <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-<!-- WGG end of Enrollment Chart -->
+
+<!-- WGG end of Data Table -->
 
 <!-- Kent & Kyle adding Google Geochart -->
-<div class="box">
-  <div class="box-header"><span class="title">Performance by State</span></div>
-    <div class="box-content padded" style="text-align: center" >
-     <head>
-    
-      <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+  <div class="col-md-6">
+    <div class="box">
+      <div class="box-header"><span class="title">Performance by State</span></div>
+      <div class="box-content padded" style="text-align: center" >
+        <head>
+        <script type='text/javascript' src='https://www.google.com/jsapi'></script>
         <script type='text/javascript'>
         google.load('visualization', '1', {'packages': ['geochart']});
         google.setOnLoadCallback(drawRegionsMap);
@@ -87,48 +132,19 @@
         var chart = new google.visualization.GeoChart(document.getElementById('chart_div'))
         chart.draw(data, options);
       };
-      </script>
-    </head>
+        </script>
+      </head>
 
-    <body>
-      <div id='chart_div'></div>
-    </body>
+      <body>
+        <div id='chart_div'></div>
+      </body>
     </div>
-</div>
+  </div>
+  </div>
 <!-- Kent end of adding Google Geomap -->
-
-<!-- WGG double line chart -->
-<div class="row">
-  <div class="col-md-9">
-    <div class="box">
-      <div class="box-header"><span class="title">Marketplace and Medicare</span></div>
-      <div class="box-content padded">
-        <div class="sine-chart" style="height: 300px" id="xchart-sine"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-3">
-    <div class="box">
-      <div class="box-header"><span class="title">Marketplace and Medicare Legend</span></div>
-      <div class="box-content padded">
-        <div>
-          <h6>Medicare</h6>
-            <i class="icon-circle" style="color:#3880AA"></i> 2014 New Enrollments       
-            <br>
-            <i class="icon-circle" style="color:#83C37D"></i> 2013 New Enrollments
-            <br>
-          <h6>Marketplace</h6>
-            <i class="icon-circle" style="color:#F26522"></i> 2014 Cumulative Enrollments
-        </div>  
-      </div>
-     </div>
-  </div>
 </div>
 
-
-
-<!-- WGG end of double line chart -->
+<!-- WGG end of page -->
 
 <!-- WGG hiding gauges
 <div class="box">
@@ -165,22 +181,3 @@
     </div>
 </div>
 <!-- WGG end of adding Gauges -->
-
-<!-- WGG start of Data Table -->
-<div class="row">
-  <div class="col-md-12">
-    <div class="box-content-padded">
-      <div class="box">
-        <div class="box-header"><span class="title">Churn Report</span></div>
-        <div class="box-content">
-          <div class="box-content-padded">
-            <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- WGG end of Data Table -->
-
-
