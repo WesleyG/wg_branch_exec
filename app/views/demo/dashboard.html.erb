@@ -1,7 +1,7 @@
 <!-- WGG first row -->
 <div class="row">
 <!-- WGG double line chart -->
-  <div class="col-md-5">
+  <div class="col-md-6">
     <div class="box">
       <div class="box-header"><span class="title">Marketplace and Medicare</span></div>
       <div class="box-content padded">
@@ -10,28 +10,31 @@
     </div>
   </div>
 
-  <div class="col-md-1">
+  <div class="col-md-6">
+    <div class="box">
+      <%= render 'partials/enrollment_chart' %>
+    </div>
+  </div>
+</div>
+
+<!-- WGG legend -->
+<div class="row">
+
+  <div class="col-md-6">
     <div class="box">
       <div class="box-header"><span class="title">Marketplace and Medicare Legend</span></div>
       <div class="box-content padded">
         <div>
-          <h6>Medicare</h6>
+          <b>Medicare</b>
             <i class="icon-circle" style="color:#3880AA"></i> 2014 New Enrollments       
-            <br>
             <i class="icon-circle" style="color:#83C37D"></i> 2013 New Enrollments
-            <br>
-          <h6>Marketplace</h6>
+          <b>Marketplace</b>
             <i class="icon-circle" style="color:#F26522"></i> 2014 Cumulative Enrollments
         </div>  
       </div>
      </div>
   </div>
 
-  <div class="col-md-6">
-    <div class="box">
-      <%= render 'partials/enrollment_chart' %>
-    </div>
-  </div>
 </div>
 
 <!-- WGG second row -->
