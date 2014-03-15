@@ -24,50 +24,6 @@
      </div>
   </div>
 
-  <div class="col-md-6">
-    <div class="box">
-      <%= render 'partials/enrollment_chart' %>
-    </div>
-  </div>
-</div>
-
-<!-- WGG legend -->
-<div class="row">
-
-  <div class="col-md-6">
-    <div class="box">
-      <div class="box-header"><span class="title">Marketplace and Medicare Legend</span></div>
-      <div class="box-content padded">
-        <div>
-          <b>Medicare</b>
-            <i class="icon-circle" style="color:#3880AA"></i> 2014 New Enrollments
-            <i class="icon-circle" style="color:#83C37D"></i> 2013 New Enrollments
-          <b>Marketplace</b>
-            <i class="icon-circle" style="color:#F26522"></i> 2014 Cumulative Enrollments
-        </div>
-      </div>
-     </div>
-  </div>
-
-</div>
-
-<!-- WGG second row -->
-<div class="row">
-<!-- WGG start of Data Table -->
-  <div class="col-md-6">
-    <div class="box-content-padded">
-      <div class="box">
-        <div class="box-header"><span class="title">Churn Report</span></div>
-        <div class="box-content">
-          <div class="box-content-padded">
-            <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<!-- WGG end of Data Table -->
 
 <!-- Kent & Kyle adding Google Geochart -->
   <div class="col-md-6">
@@ -159,6 +115,32 @@
   </div>
   </div>
 <!-- Kent end of adding Google Geomap -->
+</div>
+<!-- WGG second row -->
+<div class="row">
+
+<!-- WGG bar chart -->
+  <div class="col-md-6">
+    <div class="box">
+      <%= render 'partials/enrollment_chart' %>
+    </div>
+  </div>
+
+<!-- WGG start of Data Table -->
+  <div class="col-md-6">
+    <div class="box-content-padded">
+      <div class="box">
+        <div class="box-header"><span class="title">Churn Report</span></div>
+        <div class="box-content">
+          <div class="box-content-padded">
+            <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- WGG end of Data Table -->
 </div>
 
 <!-- WGG end of page -->
