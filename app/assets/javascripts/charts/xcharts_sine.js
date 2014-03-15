@@ -69,7 +69,7 @@ $(function () {
                         {"y":0,"x":"2012-11-01"},
                         {"y":0,"x":"2012-12-01"}
                     ]
-                }            
+                }
             ]
         }
     ];
@@ -79,7 +79,7 @@ $(function () {
         axisPaddingTop: 5,
         axisPaddingLeft: 5,
         dataFormatX: function (x) { return d3.time.format('%Y-%m-%d').parse(x); },
-        tickFormatX: function (x) { return d3.time.format('%B')(x); },
+        tickFormatX: function (x) { return d3.time.format('%b')(x); },
 
         mouseover: function (d, i) {
             var pos = $(this).offset();
@@ -111,6 +111,9 @@ $(function () {
         i = (i >= order.length) ? 0 : i;
         updateChart(order[i]);
         rotateTimer = setTimeout(rotateChart, t);
+
+        $('[marketplace-legends]').hide();
+        $('[marketplace-legend-'  + i + ']').fadeIn(1000);
     }
 
 });
