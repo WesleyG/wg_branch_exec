@@ -37,14 +37,15 @@ module ApplicationHelper
     return current_route.first, current_route.last.split(".").first
   end
 
-  def link_level
-    primary, secondary = current_link
-    if menu[primary.to_sym][:items].keys.count > 1
-      return 2
-    else
-      return 1
-    end
-  end
+# 05/02/2014 WGG commenting out this, related to crumbs
+  # def link_level
+  #   primary, secondary = current_link
+  #   if menu[primary.to_sym][:items].keys.count > 1
+  #     return 2
+  #   else
+  #     return 1
+  #   end
+  # end
 
   def nav_collapse(options = {})
     @primary, @secondary = current_link
@@ -108,6 +109,8 @@ module ApplicationHelper
     }
   end
 
+# WGG 05/02/2014 - this kept causing issues, commenting out
+=begin
   def crumbs
     primary, secondary = current_link
     return {
@@ -120,4 +123,6 @@ module ApplicationHelper
         }
     }
   end
+=end
+
 end
