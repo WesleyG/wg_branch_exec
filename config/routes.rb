@@ -7,6 +7,8 @@ ExecDash::Application.routes.draw do
 
   match '/demo', to: 'demo#root', via: 'get'
 
+  match '/login', to: 'demo#login', via: 'get'
+
   resources :demo do
     collection do
       get 'dashboard/dashboard.html' => 'demo#dashboard', as: 'dashboard'

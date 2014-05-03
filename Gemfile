@@ -31,11 +31,17 @@ end
 
 gem 'compass-rails'
 
-group :development do
+group :development, :test do
+  gem 'rspec-rails', '2.13.1'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'pry'
   gem 'pg', '0.17.1'
+end
+
+group :test do
+  gem 'selenium-webdriver', '2.35.1'
+  gem 'capybara', '2.1.0'
 end
 
 # Use ActiveModel has_secure_password
