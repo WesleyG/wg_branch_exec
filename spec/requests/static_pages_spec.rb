@@ -25,4 +25,13 @@ describe "Static pages" do
       expect(page).to have_content('About Us')
     end
   end
+
+  describe "Dashboard page" do
+
+    it "should have the content 'Performance by State'" do
+      visit '/demo/dashboard/dashboard'
+      expect(page).to have_content('Performance by State')
+    end
+  end
+
 end
