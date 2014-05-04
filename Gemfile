@@ -24,6 +24,8 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+gem 'pg', '0.17.1'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -36,7 +38,6 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'pry'
-  gem 'pg', '0.17.1'
 end
 
 group :test do
@@ -59,6 +60,5 @@ end
 # WGG added for heroku
 
 group :production do
-  gem 'pg', '0.17.1'
   gem 'rails_12factor'
 end
