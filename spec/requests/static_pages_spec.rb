@@ -29,8 +29,9 @@ describe "Static pages" do
   describe "Dashboard page" do
 
     it "should have the content 'Performance by State'" do
-      visit '/demo/dashboard/dashboard'
+      visit '/demo/dashboard/dashboard.html'
       expect(page).to have_content('Performance by State')
+      expect(page).to have_content('Churn Report')
     end
   end
 
