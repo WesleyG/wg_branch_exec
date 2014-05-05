@@ -39,6 +39,6 @@ $(document).ready(function(){
   $('.hidden-div').hide();
 
   $('button').on('click', function(){
-    $('.hidden-div').show();
+    $('.hidden-div').toggle();
   });
 });
