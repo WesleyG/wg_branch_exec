@@ -130,26 +130,27 @@
 <!-- WGG start of Data Table -->
 
 <!-- WGG adding button for data table -->
-<button class="churn">Show Churn Report</button>
-
-<div class="hidden-div"> <!-- WGG hidden div for jquery -->
-  <div class="col-md-12">
-    <div class="box-content-padded">
-      <div class="box">
-        <div class="box-header"><span class="title">Churn Report</span></div>
-        <div class="box-content">
-          <div class="box-content-padded">
-            <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+  
+    <div class="col-md-12">
+      <div class="box-content-padded">
+        <div class="box">
+          <button class="btn btn-lg2 btn-blue">Churn Report</button>
+          <div class="hidden-div"> <!-- WGG hidden div for jquery -->
+          <div class="box-header">
+          <!-- <span class="title">Churn Report</span></div> -->
+          <div class="box-content">
+            <div class="box-content-padded">
+              <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+            </div>
+          </div>
           </div>
         </div>
       </div>
-    </div>
+    </div> <!-- WGG trying to add jquery -->
+
+  <!-- WGG end of Data Table -->
   </div>
-</div> <!-- WGG trying to add jquery -->
-
-<!-- WGG end of Data Table -->
 </div>
-
 <!-- WGG end of page -->
 
 <!-- WGG hiding gauges

@@ -38,7 +38,7 @@ $(document).ready(function(){
 
   $('.hidden-div').hide();
 
-  $('button').on('click', function(){
+  $('.btn-lg2').on('click', function(){
     $('.hidden-div').toggle();
   });
 });
