@@ -45,4 +45,8 @@ class DemoController < ApplicationController
 
   def error404
   end
+
+  def about
+    layout 'custom.html.erb'
+  end
 end
