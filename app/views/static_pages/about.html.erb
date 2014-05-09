@@ -1,8 +1,46 @@
-<% provide(:title, 'About Us') %>
-<h1>About Us</h1>
-<p>
-  The <a href="http://railstutorial.org/">Ruby on Rails Tutorial</a>
-  is a project to make a book and screencasts to teach web development
-  with <a href="http://rubyonrails.org/">Ruby on Rails</a>. This
-  is the sample application for the tutorial.
-</p>
+<% @no_controls = true %>
+
+<div class="col-md-4 col-md-offset-3">
+
+
+  <div class="padded">
+    <div class="login box" style="margin-top: 80px;">
+
+      <div class="box-header">
+        <span class="title">Login</span>
+      </div>
+
+      <div class="box-content padded">
+        <form class="separate-sections">
+          <div class="input-group addon-left">
+            <span class="input-group-addon" href="#">
+              <i class="icon-user"></i>
+            </span>
+            <input type="text" placeholder="username">
+          </div>
+
+          <div class="input-group addon-left">
+            <span class="input-group-addon" href="#">
+              <i class="icon-key"></i>
+            </span>
+            <input type="password" placeholder="password">
+          </div>
+
+          <div>
+            <% link_to "/pages/dashboard/dashboard.html", relative: true, class: "btn btn-blue btn-block" do %>
+                Login <i class="icon-signin"></i>
+            <% end %>
+          </div>
+
+        </form>
+
+        <div>
+          <% link_to "/pages/other/sign_up.html", relative: true do %>
+              Don't have an account? <strong>Sign Up</strong>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
