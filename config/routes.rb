@@ -12,7 +12,7 @@ ExecDash::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'demo#root'
 
-  match '/demo', to: 'demo#root', via: 'get'
+  match '/demo', to: 'demo#dashboard', via: 'get'
 
   resources :demo do
     collection do
