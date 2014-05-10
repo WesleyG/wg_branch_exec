@@ -1,21 +1,14 @@
 require 'spec_helper'
 
 describe "Static pages" do
-
+  subject { page }
+  
   describe "Home page" do
     before { visit root_path }
 
-    it "should have the content 'Sample App'" do
-       expect(page).to have_content('Home')
-    end
-
-    it "should have the base title" do
-       expect(page).to have_title("Evolve Exec")
-    end
-
-    it "should not have a custom page title" do
-       expect(page).not_to have_title('| Home')
-    end
+    it { should have_content('Home') }
+    it { should have_title("Evolve Exec") }
+    it { should_not have_title('| Home') }
   end
 
   describe "Help page" do
