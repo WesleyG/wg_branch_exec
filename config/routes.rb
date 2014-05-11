@@ -7,7 +7,8 @@ ExecDash::Application.routes.draw do
   match '/about', to: 'static_pages#about', via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'
   match '/login', to: 'static_pages#login', via: 'get' 
-  match '/signup',  to: 'users#new',            via: 'get' 
+  match '/signup',  to: 'users#new',            via: 'get'
+  match '/payment_def', to: "static_pages#payment_def", via: 'get' 
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

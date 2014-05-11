@@ -17,4 +17,7 @@ class StaticPagesController < ApplicationController
   
   def login
   end
+
+  def payment_def
+  end
 end
