@@ -67,7 +67,7 @@ module ApplicationHelper
   def menu
     return {
         dashboard: {
-            primary: { link: "dashboard", icon: "icon-dashboard", label: "Dashboard" },
+            primary: { link: "#", icon: "icon-dashboard", label: "Dashboard" },
             items: {
                 dashboard: { icon: "icon-dashboard", label: "Dashboard" }
             }
@@ -85,13 +85,13 @@ module ApplicationHelper
         #    }
         #},
         forms: {
-            primary: { link: "forms", icon: "icon-group", label: "Agencies" },
+            primary: { link: "#{}", icon: "icon-group", label: "Agencies" },
             items: {
                 forms: { icon: "icon-edit", label: "Form Elements" }
             }
         },
         charts: {
-            primary: { link: "charts", icon: "icon-sitemap", label: "Internal"},
+            primary: { link: "#", icon: "icon-sitemap", label: "Internal"},
             items: {
                 charts: { icon: "icon-bar-chart", label: "Charts"}
             }
