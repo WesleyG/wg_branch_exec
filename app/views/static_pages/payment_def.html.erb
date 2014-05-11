@@ -1,6 +1,8 @@
 <% provide(:title, 'Payment Def') %>
 <% @no_controls = true %>
 
+<div>
 <%= form_tag do %>
-  Form contents
+  <%= number_field(:product, :price, in: 1.0..20.0, step: 0.5) %>
 <% end %>
+</div>
