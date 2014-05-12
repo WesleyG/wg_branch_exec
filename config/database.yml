@@ -2,7 +2,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: sample_app_dev
+  database: sample_app_dev2
   pool: 5
   username: sample_app
   password: rail$i$gr3at!
@@ -12,7 +12,7 @@ development:
 test: &test
   adapter: postgresql
   encoding: unicode
-  database: sample_app_test
+  database: sample_app_test2
   pool: 5
   username: sample_app
   password: rail$i$gr3at!
@@ -21,7 +21,7 @@ test: &test
 production:
   adapter: postgresql
   encoding: unicode
-  database: sample_app_production
+  database: sample_app_production2
   pool: 5
   username: sample_app
   password:
