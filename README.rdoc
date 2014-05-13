@@ -30,3 +30,9 @@ Please feel free to use a different markup language if you do not plan to run
 To run static pages test:
 
 $ bundle exec rspec spec/requests/static_pages_spec.rb
+
+To create a test database and test users
+
+$ bundle exec rake db:migrate
+$ bundle exec rake test:prepare # try running is test database is corrupted
+$ bundle exec rspec spec/models/user_spec.rb
