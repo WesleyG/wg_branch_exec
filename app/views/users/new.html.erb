@@ -1,10 +1,6 @@
----
-layout: only_topbar
----
-
 <% @no_controls = true %>
 
-<div class="col-md-4 col-md-offset-4">
+<div class="col-md-4 col-md-offset-3">
 
   <div class="padded">
 
@@ -17,39 +13,22 @@ layout: only_topbar
       <div class="box-content padded">
         <form class="separate-sections">
 
-          <div class="input-group addon-left">
-          <span class="input-group-addon" href="#">
-            <i class="icon-envelope"></i>
-          </span>
-            <input type="text" placeholder="email">
-          </div>
+          <%= form_for(@user) do |f| %>
 
-          <div class="input-group addon-left">
-          <span class="input-group-addon" href="#">
-            <i class="icon-user"></i>
-          </span>
-            <input type="text" placeholder="username">
-          </div>
+            <%= f.label :name %><br>
+            <%= f.text_field :name %><br><br>
 
-          <div class="input-group addon-left">
-          <span class="input-group-addon" href="#">
-            <i class="icon-key"></i>
-          </span>
-            <input type="password" placeholder="password">
-          </div>
+            <%= f.label :email %><br>
+            <%= f.text_field :email %><br><br>
 
-          <div class="input-group addon-left">
-          <span class="input-group-addon" href="#">
-            <i class="icon-key"></i>
-          </span>
-            <input type="password" placeholder="confirm password">
-          </div>
+            <%= f.label :password %><br>
+            <%= f.password_field :password %><br><br>
 
-          <div>
-            <% link_to "/pages/dashboard/dashboard.html", relative: true, class: "btn btn-blue btn-block" do %>
-                Sign Up <i class="icon-ok"></i>
-            <% end %>
-          </div>
+            <%= f.label :password_confirmation, "Confirmation" %><br>
+            <%= f.password_field :password_confirmation %><br><br>
+
+            <%= f.submit "Create my account", class: "btn btn-large btn-primary" %>
+          <% end %>
 
         </form>
 
@@ -61,4 +40,5 @@ layout: only_topbar
       </div>
 
     </div>
+  </div>
 </div>
