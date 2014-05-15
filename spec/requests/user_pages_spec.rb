@@ -13,7 +13,7 @@ require 'spec_helper'
   end
 
   describe "signup page" do
-    before { visit signup_path }
+  before { visit signup_path }
 
     it { should have_content('Sign Up') }
     it { should have_title('Evolve Exec') }
