@@ -33,7 +33,12 @@
 
             <li class="cdrop"><%= link_to "Home", root_path %></li>
 
-            <li class="cdrop"><%= link_to "Sign In", new_session_path %></li>
+            <% if signed_in? %>
+              <%= link_to "Sign out", signout_path, method: "delete" %>
+            <% else %>
+              <li class="cdrop"><%= link_to "Sign in", signin_path %></li>
+              <li class="cdrop"><%= link_to "Sign up", signup_path %></li>
+            <% end %>
 
 
             <!-- WGG remove drop down menu
