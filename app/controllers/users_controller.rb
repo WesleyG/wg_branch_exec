@@ -11,12 +11,11 @@ class UsersController < ApplicationController
 	@user = User.find(params[:id])
   end
 
-  ####### WGG ########
-
   def create
     @user = User.new(user_params)
     if @user.save
-	  flash[:success] = "Welcome to the EvolveSPM Exec Dashboard!"
+      sign_in @user
+	    flash[:success] = "Welcome to the EvolveSPM Exec Dashboard!"
       redirect_to @user
     else
       render 'new'
