@@ -39,6 +39,7 @@
             <% if signed_in? %>
               <li class="cdrop">
                 <%= link_to "Sign out", signout_path, method: "delete" %>
+                <li><%= link_to "Settings", edit_user_path(current_user) %></li>
               </li>
             <% else %>
               <li class="cdrop"><%= link_to "Sign in", signin_path %></li>
