@@ -40,5 +40,6 @@ $(document).ready(function(){
 
   $('.btn-lg2').on('click', function(){
     $('.hidden-div').toggle();
+    $('.btn-lg2').hide();
   });
 });
