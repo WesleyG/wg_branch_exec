@@ -1,1 +1,20 @@
 <h1>New Definition</h1>
+
+<!-- # WGG 5/24/2014 the url after definitions specifies where
+  		the user is taken after submitting a form -->
+<%= form_for :definitions, url: definitions_path do |f| %>
+
+  <p>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </p>
+ 
+  <p>
+    <%= f.label :text %><br>
+    <%= f.text_area :text %>
+  </p>
+ 
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
