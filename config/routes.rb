@@ -4,6 +4,7 @@ ExecDash::Application.routes.draw do
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :payment_def
+  resources :definitions
   root 'static_pages#home'
   #match '/home', to: 'static_pages#home', via: 'get'
 
