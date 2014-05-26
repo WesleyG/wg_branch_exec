@@ -4,7 +4,7 @@ class DefinitionsController < ApplicationController
 	end
 
 	def create
-	  @definition = Definition.new(params[:definition_params])
+	  @definition = Definition.new(definition_params)
 	 
 	  @definition.save
 	  redirect_to @definition
