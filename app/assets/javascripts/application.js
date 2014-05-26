@@ -31,6 +31,7 @@
 //= require charts/xcharts_sine
 //= require charts/xcharts_bar
 //= require charts/sparkline_samples
+//= require custom/definitions
 //= require generic
 
 // WGG I tried putting the hidden div code here but it didn't work
