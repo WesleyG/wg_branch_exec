@@ -7,3 +7,8 @@
   <strong>Text:</strong>
   <%= @definition.text %>
 </p>
+
+<p>
+  <strong>Year Amount:</strong>
+  <%= number_to_currency(@definition.year_amount) %>
+</p>

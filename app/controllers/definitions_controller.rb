@@ -16,6 +16,6 @@ end
 
 	private
 	  def definition_params
-	    params.require(:definition).permit(:title, :text)
+	    params.require(:definition).permit(:title, :text, :year_amount)
 	  end
 end
