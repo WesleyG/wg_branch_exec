@@ -26,6 +26,19 @@ gem 'jbuilder', '~> 1.2'
 
 gem 'pg', '0.17.1'
 
+# WGG 5/27/2014 from Darby:
+# Not sure how critical the calculation is, but Ruby is a tad 
+# problematic with floating point math. There is a gem called 
+# money that pretty much everyone uses when dealing with money 
+# calculations: https://github.com/RubyMoney/money. It stores 
+# the the value as an integer in cents. so instead of 10.00 
+# it would store 1000. That makes it easier to do math with. 
+# It also supports currency conversation. Not sure how 
+# important this number is, but if you think you’ll be 
+# dealing with fractions of a dollar, I would recommend 
+# using this gem
+gem 'money', '6.1.1'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

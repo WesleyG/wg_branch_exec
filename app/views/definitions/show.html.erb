@@ -9,6 +9,38 @@
 </p>
 
 <p>
-  <strong>Year Amount:</strong>
+  <strong>Initial Year Amount:</strong>
   <%= number_to_currency(@definition.year_amount) %>
 </p>
+
+<p>
+  <strong>Initial Monthly Amount:</strong>
+  <%= (number_to_currency((@definition.year_amount)/12)) %>
+</p>
+
+<p>
+  <strong>Renewal Year Amount:</strong>
+  <%= number_to_currency((@definition.year_amount/2)) %>
+</p>
+
+<p>
+  <strong>Renewal Monthly Amount:</strong>
+  <%= (number_to_currency((@definition.year_amount/2)/12)) %>
+</p>
+
+<!-- WGG 5/26/2014 found table info here http://stackoverflow.com/questions/14852951/display-data-in-table-cells-from-database-table-ruby-on-rails -->
+
+<table>                         
+  <tr>                          
+    <th>Year</th>
+    <th>Month</th>
+    <th>Payment</th>
+  </tr>
+
+  <tr>
+    <td>Year 1</td> 
+    <td>January</td>
+    <td></td>
+  </tr>
+                     
+</table>                   
