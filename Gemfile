@@ -37,7 +37,8 @@ gem 'pg', '0.17.1'
 # important this number is, but if you think you’ll be 
 # dealing with fractions of a dollar, I would recommend 
 # using this gem
-gem 'money', '6.1.1'
+#gem 'money', '6.1.1'
+gem 'money-rails', '0.11.0'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
