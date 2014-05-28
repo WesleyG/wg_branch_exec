@@ -28,6 +28,12 @@
   <%= (number_to_currency((@definition.year_amount/2)/12)) %>
 </p>
 
+<%= form_tag("/sel_month", method: "get") do %>
+  <%= label_tag(:q, "Select Month and Year:") %>
+  <%= month_field_tag(:q) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
 <!-- WGG 5/26/2014 found table info here http://stackoverflow.com/questions/14852951/display-data-in-table-cells-from-database-table-ruby-on-rails -->
 
 <table>                         

@@ -21,8 +21,11 @@
     <%= f.text_field :year_amount, 
       data: { role: 'money', a_sep: '.', a_dec: ',' } %>
   </p>
+
+  <%= f.select_month(Date.today) %>
  
   <p>
     <%= f.submit %>
   </p>
 <% end %>
+
