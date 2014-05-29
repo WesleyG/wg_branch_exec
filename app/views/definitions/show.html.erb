@@ -49,4 +49,23 @@
     <td></td>
   </tr>
                      
-</table>                   
+</table>     
+
+<script>
+  DivBy12Refresh=function(){
+    //alert('test');
+    var test2=$("#year_money").val();
+    //alert(test2);
+    $("#year_money12").val(test2/12);
+  }  
+</script>
+
+<form>
+<input type="text" id="year_money" name="year_money" value="0" onblur="DivBy12Refresh()">Year 1 payment<br>
+
+<input type="text" id="year_money12" name="year_money12" value="0">
+Year 1 payment<br>
+</form>
+
+
+
