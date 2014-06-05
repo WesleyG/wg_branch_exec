@@ -50,15 +50,15 @@
   </tr>
                      
 </table>     
-
-<div class="tour" data-daily-price="357">
-  <h2>Paris, France Tour</h2>
-  <p>$<span id="total">2,499</span> for <span id="nights-count">7</span> Nights</p>
+<br>
+<div class="paymentdef" data-annual-payment=<%= @definition.year_amount%>>
+  <h2>Payments by Month</h2>
+  <p>$<span id="total"><%= @definition.year_amount%></span> for <span id="months-count">12</span> Months</p>
   <p>
-    <label for="nights">Number of Nights</label>
+    <label for="months">Number of Months Enrolled</label>
   </p>
   <p>
-    <input type="number" id="nights" value="7">
+    <input type="number" id="months" value="12">
   </p>
 </div>
 
@@ -71,15 +71,16 @@
   }  
 
   $(document).ready(function() {
-  $("#nights").on("keyup", function() {
-    $("#nights-count").text($(this).val());
-    var price = $(this).closest('.tour').data('daily-price');
-    var days = $(this).val();
-    $('#total').text(price * days);
+  $("#months").on("keyup", function() {
+    $("#months-count").text($(this).val());
+    var annual = $(this).closest('.paymentdef').data('annual-payment');
+    var months = $(this).val();
+    $('#total').text((annual/12) * months);
   });
 });
 </script>
-
+<br>
+<br>
 <form>
 <input type="text" id="year_money" name="year_money" value="0" onblur="DivBy12Refresh()">Year 1 payment<br>
 
