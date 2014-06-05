@@ -9,12 +9,12 @@
 </p>
 
 <p>
-  <strong>Initial Year Amount:</strong>
+  <strong>Cycle Year 1 Amount:</strong>
   <%= number_to_currency(@definition.year_amount) %>
 </p>
 
 <p>
-  <strong>Initial Monthly Amount:</strong>
+  <strong>Cycle Year 1 Monthly Amount:</strong>
   <%= (number_to_currency((@definition.year_amount)/12)) %>
 </p>
 
@@ -32,25 +32,10 @@
   <%= label_tag(:q, "Select Month and Year:") %>
   <%= month_field_tag(:q) %>
   <%= submit_tag("Search") %>
-<% end %>
-
-<!-- WGG 5/26/2014 found table info here http://stackoverflow.com/questions/14852951/display-data-in-table-cells-from-database-table-ruby-on-rails -->
-
-<table>                         
-  <tr>                          
-    <th>Year</th>
-    <th>Month</th>
-    <th>Payment</th>
-  </tr>
-
-  <tr>
-    <td>Year 1</td> 
-    <td>January</td>
-    <td></td>
-  </tr>
-                     
+<% end %>                     
 </table>     
 <br>
+
 <div class="paymentdef" data-annual-payment=<%= @definition.year_amount%>>
   <h2>Payments by Month</h2>
   <p>$<span id="total"><%= @definition.year_amount%></span> for <span id="months-count">12</span> Months</p>
@@ -62,14 +47,109 @@
   </p>
 </div>
 
-<script>
-  DivBy12Refresh=function(){
-    //alert('test');
-    var test2=$("#year_money").val(); // this gets the value from the box
-    //alert(test2);
-    $("#year_money12").val(test2/12);
-  }  
+<div id="dataTables">
 
+<table cellpadding="0" cellspacing="0" border="0" class="dTable responsive">
+<thead>
+<tr>
+  <th><div>Broker</div></th>
+  <th><div>Enrolled</div></th>
+  <th><div>Disenrolled</div></th>
+  <th><div>Churn %</div></th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+  <td>Xample Rep</td>
+  <td>20</td>
+  <td>1</td>
+  <td>5.0%</td>
+</tr>
+
+<tr>
+  <td>Test Sample</td>
+  <td>94</td>
+  <td>0</td>
+  <td>0.0%</td>
+</tr>
+
+<tr>
+  <td>Edward Eagle</td>
+  <td>126</td>
+  <td>3</td>
+  <td>2.4%</td>
+</tr>
+
+
+<tr>
+  <td>Eloy Maloy</td>
+  <td>130</td>
+  <td>3</td>
+  <td>2.3%</td>
+</tr>
+
+
+<tr>
+  <td>Dale C. Donald</td>
+  <td>168</td>
+  <td>3</td>
+  <td>1.8%</td>
+</tr>
+
+
+<tr>
+  <td>Luther Lord</td>
+  <td>182</td>
+  <td>1</td>
+  <td>0.1%</td>
+</tr>
+
+<tr>
+  <td>Marianna Maybe</td>
+  <td>195</td>
+  <td>5</td>
+  <td>2.6%</td>
+</tr>
+
+
+<tr>
+  <td>Guadalupe Grat</td>
+  <td>208</td>
+  <td>2</td>
+  <td>1.0%</td>
+</tr>
+
+
+<tr>
+  <td>Charlene Chuck</td>
+  <td>219</td>
+  <td>0</td>
+  <td>0.0%</td>
+</tr>
+
+
+<tr>
+  <td>John Jones</td>
+  <td>228</td>
+  <td>3</td>
+  <td>1.3%</td>
+</tr>
+
+
+<tr>
+  <td>Steve Smith</td>
+  <td>526</td>
+  <td>13</td>
+  <td>2.5%</td>
+</tr>
+
+
+</tbody>
+</table>
+</div>
+
+<script>
   $(document).ready(function() {
   $("#months").on("keyup", function() {
     $("#months-count").text($(this).val());
@@ -79,14 +159,5 @@
   });
 });
 </script>
-<br>
-<br>
-<form>
-<input type="text" id="year_money" name="year_money" value="0" onblur="DivBy12Refresh()">Year 1 payment<br>
-
-<input type="text" id="year_money12" name="year_money12" value="0">
-Year 1 payment<br>
-</form>
-
 
 
