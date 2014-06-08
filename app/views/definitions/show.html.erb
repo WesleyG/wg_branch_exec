@@ -49,11 +49,15 @@
 
 
 <%  
-    enrollment_month = 1
+    enrollment_month = 2
     mv1 = '43' # value of month 1
     mv2 = '33'
 
 %>
+
+<% if mv1 == '43' %>
+    <%= mv2 %>
+  <% end %>
 
 <div class="row">
   <div class="col-md-12">
@@ -76,15 +80,27 @@
         <tr>
           <td>2014</td>
           <td>Jan</td>
-          <td><%= (number_to_currency(mv1)) %></td>
-          <td>5.0%</td>
+          <td>
+            <% if enrollment_month <= 1 %>
+              <%= (number_to_currency(@definition.year_amount/12)) %>
+            <% else %>
+              <%= 0 %>
+            <% end %>
+          </td>
+          <td>payment</td>
         </tr>
 
         <tr>
           <td>2014</td>
           <td>Feb</td>
-          <td><%= (number_to_currency(mv2)) %></td>
-          <td>0.0%</td>
+          <td>
+            <% if enrollment_month <= 2 %>
+              <%= (number_to_currency(@definition.year_amount/12)) %>
+            <% else %>
+              <%= 0 %>
+            <% end %>
+          </td>
+          <td>payment</td>
         </tr>
 
         <tr>
