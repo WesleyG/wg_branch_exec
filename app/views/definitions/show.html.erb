@@ -47,17 +47,22 @@
   </p>
 </div>
 
+<div>
+  <p>
+    <label for="start_date">Enrollment Start Date</label>
+  </p>
+  <p>
+    <input type="number" id="start_date" value="1">
+  </p>
+</div>
 
 <%  
-    enrollment_month = 2
-    mv1 = '43' # value of month 1
-    mv2 = '33'
+    enrollment_month = 1
+    yr1 = '2014'
+    yr2 = '2015'
+    yr3 = '2016'
 
 %>
-
-<% if mv1 == '43' %>
-    <%= mv2 %>
-  <% end %>
 
 <div class="row">
   <div class="col-md-12">
@@ -77,8 +82,11 @@
         </thead>
         <tbody>
 
+        <!-- WGG 6/8/2014 this is not dry at all, need to loop
+             the table output. It may also be better to calculate
+             this with javascript rather than ruby -->
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Jan</td>
           <td>
             <% if enrollment_month <= 1 %>
@@ -91,7 +99,7 @@
         </tr>
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Feb</td>
           <td>
             <% if enrollment_month <= 2 %>
@@ -104,15 +112,21 @@
         </tr>
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Mar</td>
-          <td>3</td>
-          <td>2.4%</td>
+          <td>
+            <% if enrollment_month <= 3 %>
+              <%= (number_to_currency(@definition.year_amount/12)) %>
+            <% else %>
+              <%= 0 %>
+            <% end %>
+          </td>
+          <td>payment</td>
         </tr>
 
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Apr</td>
           <td>3</td>
           <td>2.3%</td>
@@ -120,7 +134,7 @@
 
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>May</td>
           <td>3</td>
           <td>1.8%</td>
@@ -128,14 +142,14 @@
 
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Jun</td>
           <td>1</td>
           <td>0.1%</td>
         </tr>
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Jul</td>
           <td>5</td>
           <td>2.6%</td>
@@ -143,7 +157,7 @@
 
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Aug</td>
           <td>2</td>
           <td>1.0%</td>
@@ -151,7 +165,7 @@
 
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Sep</td>
           <td>0</td>
           <td>0.0%</td>
@@ -159,7 +173,7 @@
 
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Oct</td>
           <td>3</td>
           <td>1.3%</td>
@@ -167,35 +181,35 @@
 
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Nov</td>
           <td>13</td>
           <td>2.5%</td>
         </tr>
 
         <tr>
-          <td>2014</td>
+          <td><%= yr1 %></td>
           <td>Dec</td>
           <td>13</td>
           <td>2.5%</td>
         </tr>
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Jan</td>
           <td>1</td>
           <td>5.0%</td>
         </tr>
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Feb</td>
           <td>0</td>
           <td>0.0%</td>
         </tr>
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Mar</td>
           <td>3</td>
           <td>2.4%</td>
@@ -203,7 +217,7 @@
 
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Apr</td>
           <td>3</td>
           <td>2.3%</td>
@@ -211,7 +225,7 @@
 
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>May</td>
           <td>3</td>
           <td>1.8%</td>
@@ -219,14 +233,14 @@
 
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Jun</td>
           <td>1</td>
           <td>0.1%</td>
         </tr>
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Jul</td>
           <td>5</td>
           <td>2.6%</td>
@@ -234,7 +248,7 @@
 
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Aug</td>
           <td>2</td>
           <td>1.0%</td>
@@ -242,7 +256,7 @@
 
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Sep</td>
           <td>0</td>
           <td>0.0%</td>
@@ -250,7 +264,7 @@
 
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Oct</td>
           <td>3</td>
           <td>1.3%</td>
@@ -258,35 +272,35 @@
 
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Nov</td>
           <td>13</td>
           <td>2.5%</td>
         </tr>
 
         <tr>
-          <td>2015</td>
+          <td><%= yr2 %></td>
           <td>Dec</td>
           <td>13</td>
           <td>2.5%</td>
         </tr>
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Jan</td>
           <td>1</td>
           <td>5.0%</td>
         </tr>
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Feb</td>
           <td>0</td>
           <td>0.0%</td>
         </tr>
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Mar</td>
           <td>3</td>
           <td>2.4%</td>
@@ -294,7 +308,7 @@
 
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Apr</td>
           <td>3</td>
           <td>2.3%</td>
@@ -302,7 +316,7 @@
 
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>May</td>
           <td>3</td>
           <td>1.8%</td>
@@ -310,14 +324,14 @@
 
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Jun</td>
           <td>1</td>
           <td>0.1%</td>
         </tr>
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Jul</td>
           <td>5</td>
           <td>2.6%</td>
@@ -325,7 +339,7 @@
 
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Aug</td>
           <td>2</td>
           <td>1.0%</td>
@@ -333,7 +347,7 @@
 
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Sep</td>
           <td>0</td>
           <td>0.0%</td>
@@ -341,7 +355,7 @@
 
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Oct</td>
           <td>3</td>
           <td>1.3%</td>
@@ -349,14 +363,14 @@
 
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Nov</td>
           <td>13</td>
           <td>2.5%</td>
         </tr>
 
         <tr>
-          <td>2016</td>
+          <td><%= yr3 %></td>
           <td>Dec</td>
           <td>13</td>
           <td>2.5%</td>
@@ -375,6 +389,14 @@
 
 <script>
   $(document).ready(function() {
+  $("#months").on("keyup", function() {
+    $("#months-count").text($(this).val());
+    var annual = $(this).closest('.paymentdef').data('annual-payment');
+    var months = $(this).val();
+    $('#total').text((annual/12) * months);
+  });
+
+  // the below is not working yet
   $("#months").on("keyup", function() {
     $("#months-count").text($(this).val());
     var annual = $(this).closest('.paymentdef').data('annual-payment');
