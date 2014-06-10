@@ -62,7 +62,38 @@
     yr2 = '2015'
     yr3 = '2016'
 
+    fruits = ['apples', 'oranges', 'pears', 'apricots']
 %>
+
+<br>
+<br>
+<div class="row">
+  <table>
+    <thead>
+      <tr>
+        <th><div>header row</div></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    <% (1..10).each do |i| %>
+
+      <tr>
+        <%= i %>
+      </tr>
+
+      <% end %>
+    </tbody>
+
+
+  </table>
+</div>
+
+<br>
+<br>
+
+
+
 
 <div class="row">
   <div class="col-md-12">
@@ -81,6 +112,8 @@
         </tr>
         </thead>
         <tbody>
+
+
 
         <!-- WGG 6/8/2014 this is not dry at all, need to loop
              the table output. It may also be better to calculate
