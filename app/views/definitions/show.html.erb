@@ -63,6 +63,13 @@
     yr3 = '2016'
 
     fruits = ['apples', 'oranges', 'pears', 'apricots']
+
+    months = ['Jan', 'Feb', 'Mar',
+              'Apr', 'May', 'Jun',
+              'Jul', 'Aug', 'Sep',
+              'Oct', 'Nov', 'Dec']
+
+    years = [2014, 2015, 2016]
 %>
 
 <br>
@@ -74,6 +81,23 @@
         <th><div>header row</div></th>
       </tr>
     </thead>
+
+    <tbody>
+    <% years.each do |year| %>
+
+      <% months.each do |i| %>
+
+        <tr>
+          <%= year %>
+          <%= i %>
+          <br>
+        </tr>
+
+        <% end %>
+      <% end %>
+    </tbody>  
+
+    <br>
 
     <tbody>
     <% (1..10).each do |i| %>
