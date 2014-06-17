@@ -74,11 +74,13 @@
 
 <br>
 <br>
-<div class="row">
-  <table>
+<div class="box">
+<div class="box-content">
+  <table class="table table-normal">
     <thead>
       <tr>
-        <th><div>header row</div></th>
+        <th>header row</th>
+        <th>row 2 </th>
       </tr>
     </thead>
 
@@ -88,14 +90,21 @@
       <% months.each do |i| %>
 
         <tr>
-          <%= year %>
+          <td style="text-align: center;">
+            <%= year %>
+          </td>
+          <td style="text-align: center;">
           <%= i %>
+          </td>
           <br>
         </tr>
 
         <% end %>
       <% end %>
     </tbody>  
+  </table>
+</div>
+</div>
 
     <br>
 
