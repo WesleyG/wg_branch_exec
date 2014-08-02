@@ -1,0 +1,74 @@
+<nav class="navbar navbar-default navbar-inverse navbar-static-top" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#"><%= image_tag "avatars/smallbluelogo_forshow.jpg", class: "menu-logo" %></a>
+
+    <% unless defined? @no_controls %>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-primary">
+          <span class="sr-only">Toggle Side Navigation</span>
+          <i class="icon-th-list"></i>
+        </button>
+
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-top">
+          <span class="sr-only">Toggle Top Navigation</span>
+          <i class="icon-align-justify"></i>
+        </button>
+    <% end %>
+  </div>
+
+      <%# we're not showing these on some pages (ex: login). these pages define a no-controls variable %>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-collapse-top">
+        <div class="navbar-right">
+
+          <ul class="nav navbar-nav navbar-left">
+
+            <li class="cdrop"><%= link_to "Demo", demo_path %></li>
+
+            <li class="cdrop"><a href="http://www.evolvespm.com">EvolveSPM</a></li>
+
+            <li class="cdrop"><%= link_to "About Us", about_path %></li>
+
+            <li class="cdrop"><%= link_to "Contact Us", contact_path %></li>
+
+            <li class="cdrop"><%= link_to "Help", help_path %></li>
+
+            <li class="cdrop"><%= link_to "Home", root_path %></li>
+
+            <% if signed_in? %>
+              <li class="cdrop">
+                <%= link_to "Sign out", signout_path, method: "delete" %>
+                <li><%= link_to "Settings", edit_user_path(current_user) %></li>
+              </li>
+            <% else %>
+              <li class="cdrop"><%= link_to "Sign in", signin_path %></li>
+              <li class="cdrop"><%= link_to "Sign up", signup_path %></li>
+            <% end %>
+
+
+            <!-- WGG remove drop down menu
+            <li class="dropdown cdrop">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Date Range <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">January 2014</a></li>
+                <li><a href="#">February 2014</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Last 12 Months</a></li>
+              </ul>
+            </li>
+            WGG -->
+          </ul>
+
+          <!-- WGG remove search field
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="search-query animated" placeholder="Search">
+              <i class="icon-search"></i>
+            </div>
+          </form>
+          WGG -->
+
+        </div>
+      </div><!-- /.navbar-collapse -->
+</nav>

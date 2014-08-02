@@ -37,14 +37,15 @@ module ApplicationHelper
     return current_route.first, current_route.last.split(".").first
   end
 
-  def link_level
-    primary, secondary = current_link
-    if menu[primary.to_sym][:items].keys.count > 1
-      return 2
-    else
-      return 1
-    end
-  end
+# 05/02/2014 WGG commenting out this, related to crumbs
+  # def link_level
+  #   primary, secondary = current_link
+  #   if menu[primary.to_sym][:items].keys.count > 1
+  #     return 2
+  #   else
+  #     return 1
+  #   end
+  # end
 
   def nav_collapse(options = {})
     @primary, @secondary = current_link
@@ -66,7 +67,7 @@ module ApplicationHelper
   def menu
     return {
         dashboard: {
-            primary: { link: "dashboard", icon: "icon-dashboard", label: "Dashboard" },
+            primary: { link: "#", icon: "icon-dashboard", label: "Dashboard" },
             items: {
                 dashboard: { icon: "icon-dashboard", label: "Dashboard" }
             }
@@ -84,13 +85,13 @@ module ApplicationHelper
         #    }
         #},
         forms: {
-            primary: { link: "forms", icon: "icon-group", label: "Agencies" },
+            primary: { link: "#{}", icon: "icon-group", label: "Agencies" },
             items: {
                 forms: { icon: "icon-edit", label: "Form Elements" }
             }
         },
         charts: {
-            primary: { link: "charts", icon: "icon-sitemap", label: "Internal"},
+            primary: { link: "#", icon: "icon-sitemap", label: "Internal"},
             items: {
                 charts: { icon: "icon-bar-chart", label: "Charts"}
             }
@@ -108,6 +109,8 @@ module ApplicationHelper
     }
   end
 
+# WGG 05/02/2014 - this kept causing issues, commenting out
+=begin
   def crumbs
     primary, secondary = current_link
     return {
@@ -120,4 +123,17 @@ module ApplicationHelper
         }
     }
   end
+=end
+
+# WGG 05/07/2014 - added for rails tutorial/static pages
+  # Returns the full title on a per-page basis.       
+  def full_title(page_title)                          # Method definition
+    base_title = "Evolve Exec"  # Variable assignment
+    if page_title.empty?                              # Boolean test
+      base_title                                      # Implicit return
+    else
+      "#{base_title} | #{page_title}"                 # String interpolation
+    end
+  end
+
 end

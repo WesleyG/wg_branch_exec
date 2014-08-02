@@ -1,0 +1,217 @@
+<%  
+    enrollment_month = 1
+    yr1 = '2014'
+    yr2 = '2015'
+    yr3 = '2016'
+
+    fruits = ['apples', 'oranges', 'pears', 'apricots']
+
+    months = ['Jan', 'Feb', 'Mar',
+              'Apr', 'May', 'Jun',
+              'Jul', 'Aug', 'Sep',
+              'Oct', 'Nov', 'Dec']
+
+    years = [2014, 2015, 2016]
+%>
+
+<p>
+  <strong>Title:</strong>
+  <%= @definition.title %>
+</p>
+ 
+<p>
+  <strong>Text:</strong>
+  <%= @definition.text %>
+</p>
+
+<p>
+  <strong>Cycle Year 1 Amount:</strong>
+  <%= number_to_currency(@definition.year_amount) %>
+</p>
+
+<p>
+  <strong>Cycle Year 1 Monthly Amount:</strong>
+  <%= (number_to_currency((@definition.year_amount)/12)) %>
+</p>
+
+<p>
+  <strong>Renewal Year Amount:</strong>
+  <%= number_to_currency((@definition.year_amount/2)) %>
+</p>
+
+<p>
+  <strong>Renewal Monthly Amount:</strong>
+  <%= (number_to_currency((@definition.year_amount/2)/12)) %>
+</p>
+
+<%= form_tag("/sel_month", method: "get") do %>
+  <%= label_tag(:q, "Select Month and Year:") %>
+  <%= month_field_tag(:q) %>
+  <%= submit_tag("Search") %>
+<% end %>                     
+     
+<br>
+
+<div class="paymentdef" data-annual-payment=<%= @definition.year_amount%>>
+  <h2>Payments by Month</h2>
+  <p>$<span id="total"><%= @definition.year_amount%></span> for <span id="months-count">12</span> Months</p>
+  <p>
+    <label for="months">Number of Months Enrolled</label>
+  </p>
+  <p>
+    <input type="number" id="months" value="12">
+  </p>
+</div>
+
+<div>
+  <p>
+    <label for="start_date">Enrollment Start Date</label>
+  </p>
+  <p>
+    <input type="number" id="start_date" value="1">
+  </p>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="box">
+      <div class="box-header"><span class="title">Churn Report</span></div>
+      <div class="box-content">
+        <div id="dataTables">
+
+        <table cellpadding="0" cellspacing="0" border="0" class="dTable-3year responsive">
+        <thead>
+        <tr>
+          <th><div>Year</div></th>
+          <th><div>Month</div></th>
+          <th><div>Value</div></th>
+          <th bgcolor="#00FF00"><div>Payment</div></th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+
+        <!-- WGG 6/8/2014 this is not dry at all, need to loop
+             the table output. It may also be better to calculate
+             this with javascript rather than ruby -->
+        <tr>
+          <td><%= yr1 %></td>
+          <td>Jan</td>
+          <td>
+            <% if enrollment_month <= 1 %>
+              <%= (number_to_currency(@definition.year_amount/12)) %>
+            <% else %>
+              <%= 0 %>
+            <% end %>
+          </td>
+          <td>payment</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Darby this is the section -->
+<div class="row">
+  <div class="col-md-6">
+    <div class="box">
+      <div class="box-header"><span class="title">Here be your stats</span></div>
+      <div class="box-content">
+        <div id="wesTables">
+        <table cellpadding="0" cellspacing="0" border="0" class="table table-normal">
+          <thead>
+            <tr>
+              <td>header row</td>
+              <td>row 2 </td>
+            </tr>
+          </thead>
+
+          <tbody>
+          <% years.each do |year| %>
+
+            <% months.each do |month| %>
+
+              <tr>
+                <td style="text-align: center;">
+                  <%= year %>
+                </td>
+                <td style="text-align: center;">
+                <%= month %>
+                </td>
+              </tr>
+
+                <% end %>
+              <% end %>
+          </tbody>  
+        </table>
+       </div>
+     </div>
+    </div>
+  </div>
+</div>
+
+
+
+<br>
+    <br>
+
+    <tbody>
+    <% (1..10).each do |i| %>
+
+      <tr>
+        <%= i %>
+      </tr>
+
+      <% end %>
+    </tbody>
+
+    <br>
+
+    <tbody>
+    <% fruits.each do |i| %>
+
+      <tr>
+        <%= i %>
+      </tr>
+
+      <% end %>
+    </tbody>  
+
+
+  </table>
+</div>
+
+<br>
+<br>
+
+
+
+
+
+
+<script>
+  $(document).ready(function() {
+  $("#months").on("keyup", function() {
+    $("#months-count").text($(this).val());
+    var annual = $(this).closest('.paymentdef').data('annual-payment');
+    var months = $(this).val();
+    $('#total').text((annual/12) * months);
+  });
+
+  // the below is not working yet
+  $("#months").on("keyup", function() {
+    $("#months-count").text($(this).val());
+    var annual = $(this).closest('.paymentdef').data('annual-payment');
+    var months = $(this).val();
+    $('#total').text((annual/12) * months);
+  });
+});
+</script>
+
+

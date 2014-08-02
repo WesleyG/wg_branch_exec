@@ -1,9 +1,30 @@
 ExecDash::Application.routes.draw do
+  get "payment_def/new"
+  get "payment_defs/new"
+  resources :users
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :payment_def
+  resources :definitions
+  root 'static_pages#home'
+  #match '/home', to: 'static_pages#home', via: 'get'
+
+  # WGG added get to signout was not working with delete only
+  match '/signout', to: 'sessions#destroy', via: [:get, :delete]
+  
+  match '/help', to: 'static_pages#help', via: 'get'
+  match '/about', to: 'static_pages#about', via: 'get'
+  match '/contact', to: 'static_pages#contact', via: 'get'
+  match '/login', to: 'static_pages#login', via: 'get' 
+  match '/payment_def', to: "static_pages#payment_def", via: 'get' 
+  match '/signup',  to: 'users#new',            via: 'get'
+  match '/signin',  to: 'sessions#new',         via: 'get'
+  
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
-  root 'demo#root'
+
+  match '/demo', to: 'demo#dashboard', via: 'get'
 
   resources :demo do
     collection do

@@ -1,0 +1,14 @@
+<% provide(:title, 'Payment Def') %>
+<% @no_controls = true %>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@payment_def) do |f| %>
+
+      <%= f.label : cyc_yr_1_pymt, "Cycle year 1 payment"%>
+      <%= f.number_field : cyc_yr_1_pymt %>
+
+      <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

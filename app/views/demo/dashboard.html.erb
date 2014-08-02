@@ -1,32 +1,33 @@
 <!-- WGG first row -->
 <div class="row">
 <!-- WGG double line chart -->
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="box">
-      <div class="box-header"><span class="title">Marketplace and Medicare</span></div>
+      <div class="box-header">
+        <span class="title">       
+
+          <div marketplace-legends marketplace-legend-0>
+            <b>Medicare</b>
+              <i class="icon-circle" style="color:#3880AA"></i> 2014 New Enrollments
+              <i class="icon-circle" style="color:#83C37D"></i> 2013 New Enrollments
+          </div>
+
+          <div class="display-none" marketplace-legends marketplace-legend-1>
+            <b>Marketplace</b>
+              <i class="icon-circle" style="color:#F26522"></i> 2014 Cumulative Enrollments
+          </div>
+        </span>
+
+        </div>
       <div class="box-content padded">
         <div class="sine-chart" style="height: 300px" id="xchart-sine"></div>
       </div>
     </div>
-    <div class="box">
-      <div class="box-header"><span class="title">Marketplace and Medicare Legend</span></div>
-      <div class="box-content padded">
-        <div marketplace-legends marketplace-legend-0>
-          <b>Medicare</b>
-            <i class="icon-circle" style="color:#3880AA"></i> 2014 New Enrollments
-            <i class="icon-circle" style="color:#83C37D"></i> 2013 New Enrollments
-        </div>
-        <div class="display-none" marketplace-legends marketplace-legend-1>
-          <b>Marketplace</b>
-            <i class="icon-circle" style="color:#F26522"></i> 2014 Cumulative Enrollments
-        </div>
-      </div>
-     </div>
   </div>
 
 
 <!-- Kent & Kyle adding Google Geochart -->
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="box">
       <div class="box-header"><span class="title">Performance by State</span></div>
       <div class="box-content padded" style="text-align: center" >
@@ -120,29 +121,36 @@
 <div class="row">
 
 <!-- WGG bar chart -->
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="box">
       <%= render 'partials/enrollment_chart' %>
     </div>
   </div>
 
 <!-- WGG start of Data Table -->
-  <div class="col-md-6">
-    <div class="box-content-padded">
-      <div class="box">
-        <div class="box-header"><span class="title">Churn Report</span></div>
-        <div class="box-content">
-          <div class="box-content-padded">
-            <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+
+<!-- WGG adding button for data table -->
+  
+    <div class="col-md-12">
+      <div class="box-content-padded">
+        <div class="box-content-padded">
+          <button class="btn btn-lg2 btn-blue">Churn Report</button>
+          <div class="hidden-div"> <!-- WGG hidden div for jquery -->
+          <div class="box-header">
+          <!-- <span class="title">Churn Report</span></div> -->
+          <div class="box-content">
+            <div class="box-content-padded">
+              <%= render partial: "partials/data_tables_custom", locals: { custom_class: "dTable" } %>
+            </div>
+          </div>
           </div>
         </div>
       </div>
-    </div>
+    </div> <!-- WGG trying to add jquery -->
+
+  <!-- WGG end of Data Table -->
   </div>
-
-<!-- WGG end of Data Table -->
 </div>
-
 <!-- WGG end of page -->
 
 <!-- WGG hiding gauges

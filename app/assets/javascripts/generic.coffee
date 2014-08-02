@@ -73,6 +73,14 @@ $ ->
     sDom: "<\"table-header\"fl>t<\"table-footer\"ip>"
   )
 
+  $(".dTable-3year").dataTable(
+    iDisplayLength: 36
+    bJQueryUI: false
+    bAutoWidth: false
+    sPaginationType: "full_numbers"
+    sDom: "<\"table-header\"fl>t<\"table-footer\"ip>"
+  )
+
   #uniform js (only file fields) - note: for dataTables to work, it needs to happen after
   $("select.uniform, input:file, .dataTables_length select").uniform()
 

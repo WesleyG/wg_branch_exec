@@ -1,0 +1,29 @@
+<h1>New Definition</h1>
+
+<!-- # WGG 5/24/2014 the url after definitions specifies where
+  		the user is taken after submitting a form -->
+<%= form_for :definition, url: definitions_path do |f| %>
+
+  <p>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </p>
+ 
+  <p>
+    <%= f.label :text %><br>
+    <%= f.text_area :text %>
+  </p>
+
+<!-- # WGG name of money field is definition[year_amount] 
+        input id definition_year_amount-->
+  <p>
+    <%= f.label :year_amount %><br>
+    <%= f.text_field :year_amount, 
+      data: { role: 'money', a_sep: '.', a_dec: ',' } %>
+  </p>
+ 
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+

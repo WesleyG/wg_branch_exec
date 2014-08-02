@@ -74,6 +74,10 @@
     font-size: 12px;
   }
 
+  &.btn-lg2 {
+    font-size: 12px;
+  }
+
   @each $pair in $buttonColors {
     &.btn-#{nth($pair, 1)} {
       @include core-button(nth($pair, 2));
