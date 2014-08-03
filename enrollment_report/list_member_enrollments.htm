@@ -1,0 +1,636 @@
+<cfinclude template = "../cf_includes/cf_PRE_template_include.htm">
+<cfparam name = "display_mode" default = "">
+
+<!---
+WGG 8/2/2014 Creating enrollment report that does not use groups or return duplicates by groups. Base is a copy of list_member_groups.htm
+--->
+
+<!--- include functions --->
+<cfif not isdefined('standard_form_top_includes')>
+  <cfinclude template = "../cf_includes/standard_form_top_includes.htm">
+</cfif>
+
+<!--- set form and list files --->
+<cfset form_file="list_member_enrollments.htm">
+<cfset list_file="list_member_enrollments.htm">
+
+<!--- set form prefix for action --->
+<cfset fcode = listgetat(listlast(form_file, '/'), 1, '.')>
+
+<cfset qry_max_row = 100>
+<cfset do_query = false>
+<cfif isdefined('form.fieldnames')>
+  <cfset cf_in_tmp_data_handler = createObject('component','#application.cfcPrefix#cf_in_tmp_data_handler').init(application.sys_ds)>
+  <cfset pk_tmp_data = cf_in_tmp_data_handler.saveData(form)>
+  <cfset do_query = true>
+</cfif>
+<cfif isdefined('rptfrmid')>
+  <cfset frmdata = createObject('component','#application.cfcPrefix#cf_in_tmp_data_handler').init(sys_ds).retrieveData(rptfrmid)/>
+  <cfset dummy = structAppend(form,frmdata,true)/>
+  <cfset do_query = true>
+<cfelseif isdefined('pk_tmp_data')>
+  <cfset rptfrmid = pk_tmp_data>
+</cfif>
+
+<cfif do_query>
+
+<!--- <cfif not isdefined('url.download')>
+    <!--- 
+    call job that populates no pay table 
+    we may want to move this to a batch job. it takes about 25 seconds to run first time
+    --->
+    <cfinclude template = "../batch_jobs/Licensure_status.htm">
+  </cfif> --->
+
+
+  <cfset sel_membership_group_counts = createObject('component','#application.cfcPrefix#ListMemberGroups').qQuery(form,0,'Counts')/>
+  <cfset sel_membership_groups = createObject('component','#application.cfcPrefix#ListMemberGroups').qQuery(form,qry_max_row,'Screen')/>
+  
+  <cfif isdefined('url.download')>
+    <cfset zippath = createObject('component','#application.cfcPrefix#ListMemberGroups').qQuery(form,0,'Download')/>
+    <cfset zipfilename = listlast(zippath, "\")>
+    <cfheader name="Content-Disposition" value="attachment; filename=#zipfilename#">
+    <cfcontent type="application/unknown" file="#zippath#" reset="YES" deletefile="true"> 
+  </cfif>
+
+</cfif>
+
+<!--- set defaults for brk_sales_activity_log --->
+<cfset default_query_name = "">
+<cfset default_variables = "
+k_brk_broker_type
+broker_id
+member_id
+K_BRK_entity_contract
+broker_name
+member_application_date_start
+member_application_date_end
+cms_acceptance_date_start
+cms_acceptance_date_end
+member_enrolled_date_start
+member_enrolled_date_end
+member_terminated_date_start
+member_terminated_date_end
+k_grp_group_set
+k_grp_group
+disenrolled~4
+missing_transactions
+missing_transactions__payment_period
+find_missing_transactions~0
+find_missing_transactions__renewal~0
+find_missing_win_contract
+find_missing_cms_comprpt
+find_missing_rep
+find_missing_win
+includeUplines">
+<cfinclude template="../cf_includes/set_defaults.htm">
+<!--- END set defaults for brk_sales_activity_log --->
+
+<!--- page title --->
+<cfset page_title="Enrollments">
+<cfsavecontent variable="page_description">
+Search for enrollments.
+</cfsavecontent>
+
+<!--- page header --->
+<cfinclude template = "../templates/header.htm">
+<cfinclude template = "../templates/cf_in_prompts.htm">
+<cfinclude template = "../templates/cf_in_page_info.htm">
+
+<cfset form_name = "frm_#fcode#">
+<!--- FMT: tmp location. I'm not sure this should go here." --->
+<cfparam name="selected_groups" default=0>
+
+<cfif isdefined('form.k_grp_group')>
+    <cfset selected_groups = form.k_grp_group>
+<Cfelse>
+<!---    <cfquery name="sel_selected_groups" datasource="#sys_ds#">
+    select k_grp_group
+    from  mem_membership_window_group
+    where cid =<cfqueryparam value="#val(cid)#" cfsqltype="cf_sql_integer">
+  </cfquery>
+    <cfset selected_groups = valueList(sel_selected_groups.k_grp_group)>
+--->
+</cfif>
+
+<cfajaxproxy cfc="#application.cfcprefix#tierChildItems" jsclassname="tierChildItems">
+
+<script type="text/javascript">
+  
+
+  var group_set = <cfoutput>#val(k_grp_group_set)#</cfoutput>;
+  var selected_groups = '<cfoutput>#selected_groups#</cfoutput>';
+  
+    var selGroups = new Array();
+  <cfloop list="selected_groups" index="tc">
+    selGroups.push(<cfoutput>#evaluate("#tc#")#</cfoutput>);
+  </cfloop>
+  
+  Array.prototype.findIdx = function(value){
+      for (var i=0; i < this.length; i++) {
+          if (this[i] == value) {
+              return i;
+          }
+      }
+  }
+  
+
+  var getGroupsInSet = function(k_grp_group_set){
+    if ( k_grp_group_set == '' ) {
+      k_grp_group_set = 0;  
+    }
+      var obj = new tierChildItems();
+      obj.setCallbackHandler(populateGroupsInSet);
+      obj.getGroupsInSet(k_grp_group_set);
+  }
+
+     <cfoutput> 
+  var populateGroupsInSet = function(res){
+    with(document.#form_name#){
+      for(i=k_grp_group.options.length-1;i>=0;i--)
+      {
+        k_grp_group.remove(i);
+      }
+  
+      var option = new Option();
+      option.text='--';
+      option.value='0';
+      k_grp_group.options[0] = option;
+      for(i=0;i<res.DATA.length;i++){
+        var option = new Option();
+        option.text=res.DATA[i][res.COLUMNS.findIdx('NAME')];
+        option.value=res.DATA[i][res.COLUMNS.findIdx('#uCase("pk_grp_group")#')];
+        k_grp_group.options[i+1] = option;
+      }
+    }    
+  }
+  </cfoutput> 
+  
+</script>
+
+<!--- FMT: End tmp location --->
+
+<cflayout type="tab" style="width:100%;border:0px;" name="NoPayReport">
+<cflayoutarea title="Search Criteria">
+
+<!-- ouput form -->
+<cfoutput>
+<form method="POST" action="#list_file#" name="#form_name#">
+</cfoutput>
+  <div align="left">
+    <table class="form_table">
+      
+      <tr>
+        <td class="form_field_name" align="right">Broker Type</td>
+        <td class="form_field_entry">
+          <cfset drop_name = "K_BRK_broker_type"><cfset multi_drop = "yes"><cfset block_clear = true><cfinclude template="../dropdowns/dropdown.htm">
+          <cfif isdefined("valStruct.broker_type")><span class="valmsg"><cfoutput>#valStruct.broker_type#</cfoutput></span></cfif>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form_field_name" align="right">Contract</td>
+        <td class="form_field_entry">
+          <cfset drop_name = "K_brk_entity_contract"><cfset multi_drop = "yes"><cfset block_clear = true><cfinclude template="../dropdowns/dropdown.htm">
+          <cfif isdefined("valStruct.contract")><span class="valmsg"><cfoutput>#valStruct.contract#</cfoutput></span></cfif>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form_field_name" align="right">Broker Name</td>
+        <td class="form_field_entry">
+          <cfoutput><input type="text" name="broker_name" size="20" value="#broker_name#"></cfoutput>
+          <cfif isdefined("valStruct.broker_name")><span class="valmsg"><cfoutput>#valStruct.broker_name#</cfoutput></span></cfif>
+        </td>
+      </tr>
+      <tr>
+        <td class="form_field_name" align="right">Broker ID</td>
+        <td class="form_field_entry">
+          <cfoutput><input type="text" name="broker_id" size="20" value="#broker_id#"></cfoutput>
+          <cfif isdefined("valStruct.broker_id")><span class="valmsg"><cfoutput>#valStruct.broker_id#</cfoutput></span></cfif>
+        </td>
+      </tr>
+      <tr>
+        <td class="form_field_name" align="right">Member ID</td>
+        <td class="form_field_entry">
+          <cfoutput><input type="text" name="member_id" size="20" value="#member_id#"></cfoutput>
+          <cfif isdefined("valStruct.member_id")><span class="valmsg"><cfoutput>#valStruct.member_id#</cfoutput></span></cfif>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form_field_name" align="right">Application Date<br/>"(mm-dd-yy)"</td>
+        <td class="form_field_entry">
+          <table class="layout_table">
+            <tr>
+              <td>
+          <cfoutput><input type="text" name="member_application_date_start" size="20" value="#member_application_date_start#"></cfoutput>
+          <cfif isdefined("valStruct.member_application_date_start")><span class="valmsg"><cfoutput>#valStruct.member_application_date_start#</cfoutput></span></cfif>
+              </td>
+              <td>
+          <cfoutput><input type="text" name="member_application_date_end" size="20" value="#member_application_date_end#"></cfoutput>
+          <cfif isdefined("valStruct.member_application_date_end")><span class="valmsg"><cfoutput>#valStruct.member_application_date_end#</cfoutput></span></cfif>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">From
+              </td>
+              <td align="center">Through
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form_field_name" align="right">CMS Acceptance Date<br/>"(mm-dd-yy)"</td>
+        <td class="form_field_entry">
+          <table class="layout_table">
+            <tr>
+              <td>
+          <cfoutput><input type="text" name="cms_acceptance_date_start" size="20" value="#cms_acceptance_date_start#"></cfoutput>
+          <cfif isdefined("valStruct.cms_acceptance_date_start")><span class="valmsg"><cfoutput>#valStruct.cms_acceptance_date_start#</cfoutput></span></cfif>
+              </td>
+              <td>
+          <cfoutput><input type="text" name="cms_acceptance_date_end" size="20" value="#cms_acceptance_date_end#"></cfoutput>
+          <cfif isdefined("valStruct.cms_acceptance_date_end")><span class="valmsg"><cfoutput>#valStruct.cms_acceptance_date_end#</cfoutput></span></cfif>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">From
+              </td>
+              <td align="center">Through
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form_field_name" align="right">Member Enrolled Date<br/>"(mm-dd-yy)"</td>
+        <td class="form_field_entry">
+          <table class="layout_table">
+            <tr>
+              <td>
+          <cfoutput><input type="text" name="member_enrolled_date_start" size="20" value="#member_enrolled_date_start#"></cfoutput>
+          <cfif isdefined("valStruct.member_enrolled_date_start")><span class="valmsg"><cfoutput>#valStruct.member_enrolled_date_start#</cfoutput></span></cfif>
+              </td>
+              <td>
+          <cfoutput><input type="text" name="member_enrolled_date_end" size="20" value="#member_enrolled_date_end#"></cfoutput>
+          <cfif isdefined("valStruct.member_enrolled_date_end")><span class="valmsg"><cfoutput>#valStruct.member_enrolled_date_end#</cfoutput></span></cfif>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">From
+              </td>
+              <td align="center">Through
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="form_field_name" align="right">Member Terminated Date<br/>"(mm-dd-yy)"</td>
+        <td class="form_field_entry">
+          <table class="layout_table">
+            <tr>
+              <td>
+          <cfoutput><input type="text" name="member_terminated_date_start" size="20" value="#member_terminated_date_start#"></cfoutput>
+          <cfif isdefined("valStruct.member_terminated_date_start")><span class="valmsg"><cfoutput>#valStruct.member_terminated_date_start#</cfoutput></span></cfif>
+              </td>
+              <td>
+          <cfoutput><input type="text" name="member_terminated_date_end" size="20" value="#member_terminated_date_end#"></cfoutput>
+          <cfif isdefined("valStruct.member_terminated_date_end")><span class="valmsg"><cfoutput>#valStruct.member_terminated_date_end#</cfoutput></span></cfif>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">From
+              </td>
+              <td align="center">Through
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form_field_name" align="right">Member Group</td>
+        <td class="form_field_entry">
+          <cfset drop_name="k_grp_group_set">
+          <cfset jscript="onChange='getGroupsInSet(this.value)'">
+          <cfinclude template="../dropdowns/dropdown.htm">
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="form_field_name" align="right">Member Sub Group</td>
+        <td class="form_field_entry">
+          <cfset drop_name="k_grp_group">
+          <cfset drop_where_clause  ="k_grp_group_set=#val(k_grp_group_set)#">
+          <cfset  k_grp_group = selected_groups>
+          <cfset multi_drop = "yes">
+          <cfinclude template="../dropdowns/dropdown.htm">
+          </td>
+      </tr>
+      
+      <tr>
+        <td class="form_field_name" align="right">Enrollment Status</td>
+        <td class="form_field_entry">
+          <input type="radio" name="disenrolled" id="disenrolled_4" value="4" <cfif disenrolled eq 4>checked="checked" </cfif>/><label for="disenrolled_4">Any</label><br/>
+          <input type="radio" name="disenrolled" id="disenrolled_1" value="1" <cfif disenrolled eq 1>checked="checked" </cfif>/><label for="disenrolled_1">Enrolled</label><br/>
+          <input type="radio" name="disenrolled" id="disenrolled_2" value="2" <cfif disenrolled eq 2>checked="checked" </cfif>/><label for="disenrolled_2">Disenrolled After 3 months</label><br/>
+          <input type="radio" name="disenrolled" id="disenrolled_3" value="3" <cfif disenrolled eq 3>checked="checked" </cfif>/><label for="disenrolled_3">Disenrolled Within 3 months</label><br/>
+          <input type="radio" name="disenrolled" id="disenrolled_5" value="5" <cfif disenrolled eq 5>checked="checked" </cfif>/><label for="disenrolled_5">Rapid Disenrollment</label><br/>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form_field_name" align="right">Missing</td>
+        <td class="form_field_entry">
+          <cfoutput><input type="checkbox" name="find_missing_win_contract" id="find_missing_win_contract" value="1" <cfif find_missing_win_contract eq 1>checked="checked"</cfif>/><label for="find_missing_transactions">Find enrollments missing contracts.</label></cfoutput><br/>
+          <cfoutput><input type="checkbox" name="find_missing_rep" id="find_missing_rep" value="1" <cfif find_missing_rep eq 1>checked="checked"</cfif>/><label for="find_missing_rep">Find enrollments missing reps.</label></cfoutput><br/>
+          <cfoutput><input type="checkbox" name="find_missing_win" id="find_missing_win" value="1" <cfif find_missing_win eq 1>checked="checked"</cfif>/><label for="find_missing_win">Find members missing enrollments.</label></cfoutput><br/>
+          <cfoutput><input type="checkbox" name="find_missing_cms_comprpt" id="find_missing_cms_comprpt" value="1" <cfif find_missing_cms_comprpt eq 1>checked="checked"</cfif>/><label for="find_missing_cms_comprpt">Find members missing Matching CMS Comp Report.</label></cfoutput><br/>
+        </td>
+      </tr>
+      <tr>
+        <td class="form_field_name" align="right">Missing Transactions</td>
+        <td class="form_field_entry">
+          <cfoutput><input type="checkbox" name="find_missing_transactions" id="find_missing_transactions" value="1" <cfif find_missing_transactions eq 1>checked="checked"</cfif> onClick="if( this.checked && this.form.missing_transactions.value == '' ) { this.form.missing_transactions.value = 20 };"/><label for="find_missing_transactions">Find Enrollments missing payments.</label></cfoutput><br/>
+          <cfoutput><input type="text" name="missing_transactions" size="5" value="#missing_transactions#"></cfoutput> days since eligibility start date.
+          <cfif isdefined("valStruct.missing_transactions")><br/><span class="valmsg"><cfoutput>#valStruct.missing_transactions#</cfoutput></span></cfif><br/>
+          <!---
+          <cfoutput><input type="checkbox" name="find_missing_transactions__renewal" id="find_missing_transactions__renewal" value="1" <cfif find_missing_transactions__renewal eq 1>checked="checked"</cfif> /><label for="find_missing_transactions__renewal">Find Enrollments missing initial payments.</label></cfoutput><br/>
+          <cfoutput>In Payment Period <input type="text" name="missing_transactions__payment_period" size="5" value="#missing_transactions__payment_period#"></cfoutput>.
+          <cfif isdefined("valStruct.missing_transactions__renewal")><br/><span class="valmsg"><cfoutput>#valStruct.missing_transactions__renewal#</cfoutput></span></cfif>
+          --->
+        </td>
+      </tr>
+      <tr>
+        <td class="form_field_name" align="right">Include Uplines</td>
+        <td class="form_field_entry">
+          <cfoutput><input type="checkbox" name="includeUplines" id="includeUplines" value="1" <cfif includeUplines eq 1>checked="checked"</cfif>/><label for="includeUplines">Include upline columns.</label></cfoutput><br/>
+          <cfif isdefined("valStruct.missing_transactions")><br/><span class="valmsg"><cfoutput>#valStruct.missing_transactions#</cfoutput></span></cfif>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form_field_entry" colspan="2" align="right"> <input class="form_submit_button" type="submit" value="Search" name="Submit"></td>
+      </tr>
+    </table>
+  </div>
+
+</form>
+<!-- END output form -->
+</cflayoutarea>
+
+<cfif isdefined('form.Submit')>
+
+  <cfset tab_message = "Note that an enrollment can be classified under more than one group at a time.">
+
+  <cflayoutarea title="Summary" style="width:100%;" selected="true">
+  
+  <!-- output list -->
+  <table class="list_table scrolling" scroll_height="700">
+  
+    <thead>
+    <tr class="list_col_hdr">
+  
+      <td>Group</td>
+      
+      <td>Sub Group</td>
+      
+      <td>Contract</td>
+      
+      <td>Rep Type</td>
+      
+      <td>Count</td>
+    </tr>
+    </thead>
+    <thead>
+    <tr style="height:50px;" class="list_caption">
+      <td class="list_caption" colspan="5">
+        <cfoutput>#tab_message#</cfoutput>
+      </td>
+    </tr>
+    </thead>
+
+    <cfquery name="tot" dbtype="query">
+    select sum(cnt) as summary_tot from sel_membership_group_counts
+    </cfquery>
+    <cfset summary_tot = tot.summary_tot>
+    <cfset toggle = 1>
+    <cfoutput >
+      <cfif toggle gt 0><cfset even_odd = "even"><cfelse><cfset even_odd = "odd"></cfif><cfset toggle = toggle*-1>
+      <tr class="list_col_data_#even_odd#">
+
+      <td></td>
+      
+      <td></td>
+      
+      <td></td>
+      
+      <td>Total</td>
+      
+      <td>#summary_tot#</td>
+      </tr>
+    </cfoutput>
+    <cfset toggle = 1>
+    <cfoutput query = "sel_membership_group_counts">
+      <cfif toggle gt 0><cfset even_odd = "even"><cfelse><cfset even_odd = "odd"></cfif><cfset toggle = toggle*-1>
+      <tr class="list_col_data_#even_odd#">
+
+      <td>#group_name#</td>
+      
+      <td>#sub_group#</td>
+      
+      <td>#contract#</td>
+      
+      <td>#rep_typ#</td>
+      
+      <td>#cnt#</td>
+      </tr>
+    </cfoutput>
+  </table>
+  
+  </cflayoutarea>
+  
+  <cflayoutarea name="memberviewDiv" initHide="false" title="Detail" STYle="width:98%;">
+  <!-- output list -->
+  <table class="list_table scrolling" scroll_height="700">
+  
+    <thead>
+    <tr class="list_col_hdr">
+  
+      <td>Group</td>
+      
+      <td>Sub Group</td>
+
+      <td>Contract Name</td>
+      
+      <td>Line item name</td>
+      
+      <td>Rep Type</td>
+      
+      <td>Broker ID</td>
+      
+      <td>Broker First</td>
+      
+      <td>Broker Last</td>
+      
+      <td>Mem. HIC</td>
+      
+      <td>Member ID</td>
+      
+      <td>Application Date</td>
+      
+      <td>CMS Acceptance Date</td>
+      
+      <td>Elig. Start Date</td>
+      
+      <td>Elig. End Date</td>
+
+      <td>Member First</td>
+
+      <td>Member last</td>
+      
+      <td>CMSCont</td>
+      
+      <td>CYStart</td>
+      
+      <td>Plan Code</td>
+      
+      <td>Prior Plan</td>
+      <cfif includeUplines eq 1>
+      <td>UpLine 0</td>
+      
+      <td>UpLine 1</td>
+      
+      <td>UpLine 2</td>
+      
+      <td>UpLine 3</td>
+      
+      <td>UpLine 4</td>
+      
+      <td>UpLine 5</td>
+      
+      <td>UpLine 6</td>
+      
+      <td>UpLine 7</td>
+      
+      <td>UpLine 8</td>
+      
+      <td>UpLine 9</td>
+      
+      <td>UpLine 10</td>
+      </cfif>
+    </tr>
+    </thead>
+    <thead>
+      <tr class="list_caption">
+
+        <cfset fnd = sel_membership_groups.recordcount>
+        <td style="height:75px;" class="list_caption" colspan="<cfif includeUplines eq 1>29<cfelse>18</cfif>">
+          
+        <cfoutput>#tab_message#</cfoutput><br><br>
+
+        <cfif qry_max_row eq fnd>
+          More than <cfoutput>#fnd# records found. Showing #fnd# records.</cfoutput>
+        <cfelse>
+          <cfoutput>#fnd# records found.</cfoutput>
+        </cfif>
+        <cfoutput>
+        <a onclick="popwin('../reports/download_msg.htm?rptfrmid=#rptfrmid#&download=yes&report_url=../reports/list_member_groups.htm')" href="##">Download full report</a>
+        </cfoutput>
+
+        </td>
+      </tr>
+    </thead>
+    
+    <cfset toggle = 1>
+    <cfoutput query = "sel_membership_groups">
+      <cfif toggle gt 0><cfset even_odd = "even"><cfelse><cfset even_odd = "odd"></cfif><cfset toggle = toggle*-1>
+      <tr class="list_col_data_#even_odd#">
+  
+      <td>#group_name#</td>
+      
+      <td>#sub_group#</td>
+      
+      <td>#contract#</td>
+      
+      <td>#line_item_name#</td>
+      
+      <td>#rep_typ#</td>
+      
+      <td>#broker_id#</td>
+      
+      <td>#broker_first_name#</td>
+
+      <td>#broker_last_name#</td>
+
+      <td>#hic#</td>
+
+      <td>#member_id#</td>
+
+      <td>#dateFormat( application_date , date_mask )#</td>
+
+      <td>#dateFormat( CMSAccDate , date_mask )#</td>
+
+      <td>#dateFormat( elig_start_date , date_mask )#</td>
+
+      <td>#dateFormat( elig_end_date , date_mask )#</td>
+
+      <td>#mem_first_name#</td>
+
+      <td>#mem_last_name#</td>
+
+      <td>#CMSCont#</td>
+      
+      <td>#CYStart#</td>
+
+      <td>#PlanCode#</td>
+      
+      <td>#PriorPlan#</td>
+      <cfif includeUplines eq 1>
+      <td>#UpLine0#</td>
+      
+      <td>#UpLine1#</td>
+      
+      <td>#UpLine2#</td>
+      
+      <td>#UpLine3#</td>
+      
+      <td>#UpLine4#</td>
+      
+      <td>#UpLine5#</td>
+      
+      <td>#UpLine6#</td>
+      
+      <td>#UpLine7#</td>
+      
+      <td>#UpLine8#</td>
+      
+      <td>#UpLine9#</td>
+      
+      <td>#UpLine10#</td>
+      </cfif>
+      </tr>
+    </cfoutput>
+  </table>
+  <!-- END output list -->
+  
+  </cflayoutarea>
+</cfif>
+
+</cflayout>
+
+<!--- uncomment to do scrolling table 
+--->
+<script>
+  doScrollTables();
+</script>
+
+<!--- page footer --->
+<cfinclude template = "../templates/footer.htm">
+<cfinclude template = "../cf_includes/cf_POST_template_include.htm">
