@@ -2,7 +2,10 @@
 <cfparam name = "display_mode" default = "">
 
 <!---
-WGG 8/2/2014 Creating enrollment report that does not use groups or return duplicates by groups. Base is a copy of list_member_groups.htm
+WGG 8/3/2014 based off of /reports/list_member_group.htm
+links to /cfcincludes/ListMemberEnrollments.cfc (based off of /cfcincludes/ListMemberGroups.cfc)
+
+member id 31000903501 on scan devel should only return one result, returns 8 originally due to groups in ListMemberGroups original code.
 --->
 
 <!--- include functions --->
@@ -42,12 +45,12 @@ WGG 8/2/2014 Creating enrollment report that does not use groups or return dupli
     <cfinclude template = "../batch_jobs/Licensure_status.htm">
   </cfif> --->
 
-
-  <cfset sel_membership_group_counts = createObject('component','#application.cfcPrefix#ListMemberGroups').qQuery(form,0,'Counts')/>
-  <cfset sel_membership_groups = createObject('component','#application.cfcPrefix#ListMemberGroups').qQuery(form,qry_max_row,'Screen')/>
+<!--- WGG 8/3/2014 links to /cfcincludes/ListMemberEnrollments.cfc --->
+  <cfset sel_membership_group_counts = createObject('component','#application.cfcPrefix#ListMemberEnrollments').qQuery(form,0,'Counts')/>
+  <cfset sel_membership_groups = createObject('component','#application.cfcPrefix#ListMemberEnrollments').qQuery(form,qry_max_row,'Screen')/>
   
   <cfif isdefined('url.download')>
-    <cfset zippath = createObject('component','#application.cfcPrefix#ListMemberGroups').qQuery(form,0,'Download')/>
+    <cfset zippath = createObject('component','#application.cfcPrefix#ListMemberEnrollments').qQuery(form,0,'Download')/>
     <cfset zipfilename = listlast(zippath, "\")>
     <cfheader name="Content-Disposition" value="attachment; filename=#zipfilename#">
     <cfcontent type="application/unknown" file="#zippath#" reset="YES" deletefile="true"> 
@@ -87,9 +90,9 @@ includeUplines">
 <!--- END set defaults for brk_sales_activity_log --->
 
 <!--- page title --->
-<cfset page_title="Enrollments">
+<cfset page_title="Enrollments WG TEST">
 <cfsavecontent variable="page_description">
-Search for enrollments.
+Search for enrollments in specific member groups, representative contracts and date spans.
 </cfsavecontent>
 
 <!--- page header --->
@@ -441,9 +444,9 @@ Search for enrollments.
       <cfif toggle gt 0><cfset even_odd = "even"><cfelse><cfset even_odd = "odd"></cfif><cfset toggle = toggle*-1>
       <tr class="list_col_data_#even_odd#">
 
-      <td>#group_name#</td>
+      <td>formerly group name</td>
       
-      <td>#sub_group#</td>
+      <td>formerly sub group</td>
       
       <td>#contract#</td>
       
@@ -463,10 +466,6 @@ Search for enrollments.
     <thead>
     <tr class="list_col_hdr">
   
-      <td>Group</td>
-      
-      <td>Sub Group</td>
-
       <td>Contract Name</td>
       
       <td>Line item name</td>
@@ -552,10 +551,6 @@ Search for enrollments.
     <cfoutput query = "sel_membership_groups">
       <cfif toggle gt 0><cfset even_odd = "even"><cfelse><cfset even_odd = "odd"></cfif><cfset toggle = toggle*-1>
       <tr class="list_col_data_#even_odd#">
-  
-      <td>#group_name#</td>
-      
-      <td>#sub_group#</td>
       
       <td>#contract#</td>
       

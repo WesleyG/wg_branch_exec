@@ -1,0 +1,415 @@
+<cfcomponent output="false">
+
+  <cffunction name="qGetCols" access="remote" returntype="Struct">
+    <cfargument name="frmStruct" default="#structNew()#" />
+    <cfset var loc = structNew()>
+    <cfset loc.viewlist = arraynew(2)>
+    <cfset loc.i = 1>
+
+    <cfsavecontent variable="loc.groupForCount">
+    group by 
+      contract
+      ,rep_typ
+    </cfsavecontent>
+
+    <cfsavecontent variable="loc.selForCount">
+    contract
+    ,rep_typ
+    ,count(1) as cnt
+    </cfsavecontent>
+
+    <cfsavecontent variable="loc.orderBy">
+    order by brk.name, brk.broker_id, elig_start_date, elig_end_date
+    </cfsavecontent>
+
+    <cfsavecontent variable="loc.selForScreen">
+    brk.PK_BRK_broker
+    ,btype.name as rep_typ
+    ,brk.name
+    ,brk.first_name as broker_first_name
+    ,brk.last_name as broker_last_name
+    ,brk.broker_id
+    ,c.name as contract
+    ,CONVERT( VARCHAR , win.application_date , 101 ) AS application_date
+    ,CONVERT( VARCHAR , win.acceptance_date , 101 ) AS CMSAccDate
+    ,CONVERT( VARCHAR , win.start_date , 101 ) as elig_start_date
+    ,CONVERT( VARCHAR , win.end_date , 101 ) as elig_end_date
+    ,li.name as line_item_name
+    ,mast.hicnbr as hic
+    ,mast.member_id
+    ,mast.first_name as mem_first_name
+    ,mast.last_name as mem_last_name
+    ,cmsc.contractid as CMSCont
+    ,win.cycle_start_year as CYStart
+    ,p.code as PlanCode
+    ,pt.name as PriorPlan
+    <cfif structkeyExists( arguments.frmStruct , 'includeUplines' ) and val( arguments.frmStruct.includeUplines ) eq 1>
+    ,ub0.broker_id as UpLine0
+    ,ub1.broker_id as UpLine1
+    ,ub2.broker_id as UpLine2
+    ,ub3.broker_id as UpLine3
+    ,ub4.broker_id as UpLine4
+    ,ub5.broker_id as UpLine5
+    ,ub6.broker_id as UpLine6
+    ,ub7.broker_id as UpLine7
+    ,ub8.broker_id as UpLine8
+    ,ub9.broker_id as UpLine9
+    ,ub10.broker_id as UpLine10
+    </cfif>
+    </cfsavecontent>
+
+    <!--- set download cols. use loc.selForScreen as shortcut. set them directly as needed --->
+    <cfset loc.download_cols = "">
+    <!--- get rid of dateformat comma for looping. the comma in the function messes up the list function --->
+    <cfset loc.tempcols = replacenocase(loc.selForScreen, ",'yyyy-mm-dd'", "ZZZZZZ", "ALL")>
+    <cfloop list="#loc.tempcols#" index="loc.i" delimiters="#chr(10)##chr(10)#" >
+      <cfset loc.c = listlast(loc.i, " ,#chr(9)#,#chr(10)#,#chr(13)#.")>
+      <cfif not ListFindNoCase( 'PK_BRK_broker,PK_BRK_entity_contract' , loc.c , ',' ) >
+        <cfset loc.download_cols = listappend(loc.download_cols, loc.c)>
+      </cfif>
+    </cfloop>
+
+    <!---
+    <cfdump var="#loc.download_cols#">
+    <cfabort>
+    --->
+
+    <cfreturn loc />
+
+  </cffunction>
+
+  <cffunction name="getSchemaIni" access="remote">
+    <cfargument name="downloadColumns" default="" />
+    <cfset var sel_cols = arguments.downloadColumns />
+
+    <cfset var loc = structnew()>
+    <cfif not len( sel_cols ) >
+      <cfset sel_cols = qGetCols()>
+    </cfif>
+    <cfset loc.fileUtils = CreateObject("component","#application.cfcPrefix#fileUtils")>
+    <cfset loc.report_file_name = "membershipGRoupsCounts_#session.login.k_usr_operator#_#getTickCount()#">
+    <cfset loc.temp_table_name = "membershipGRoupsCounts_#session.login.k_usr_operator#_#getTickCount()#">
+
+    <cfset loc.db_server_unc = "#application.source_file_server#">
+    <Cfif findnocase("demo",application.wh_ds)>
+      <cfset loc.db_server_unc = "hcahp3">
+    </Cfif>
+
+    <cfset loc.network_Path_FileDatasources = "\\#loc.db_server_unc#\SOURCE_FILES\FileExports">
+
+    <cfset loc.snapshot_path = "#loc.network_Path_FileDatasources#\temp">
+    <cfset loc.run_path = "#loc.snapshot_path#\#session.login.k_usr_operator#"> 
+    <cfset loc.cl="#sel_cols#">
+
+<!--- new WAF file movement start ---->
+  <cfset loc.local_run_path = "\\#application.app_file_server#\#application.app_file_subfolder#\FileExports\temp\#session.login.k_usr_operator#">
+  <!--- Change to SQLensurePath --->
+  <cfset loc.dummy = loc.fileUtils.SQLensurePath(loc.run_path)>
+  <cfset loc.dummy = loc.fileUtils.SQLensurePath(loc.local_run_path)>
+<!--- new WAF file movement end ---->
+
+    <cfsavecontent variable="loc.schmini">
+    <cfoutput>[#loc.report_file_name#.txt]
+    Format=TabDelimited
+    ColNameHeader=True
+    MaxScanRows=10
+    CharacterSet=ANSI<cfset loc.x = 0><cfloop list="#loc.cl#" index="loc.c"><cfset loc.x++>
+    Col#loc.x#="#loc.c#" Text</cfloop>
+    </cfoutput>
+    </cfsavecontent>
+    
+<!--- new WAF file movement start ---->
+  <cfset loc.schmini_path = "#loc.local_run_path#\Schema.ini" />
+  <cffile action="write" output="#loc.schmini#" file="#loc.schmini_path#" />
+  <cfset loc.report_path = "#loc.local_run_path#\#loc.report_file_name#.txt" />
+  <cffile action="write" output="#ListChangeDelims(loc.cl,"#chr(9)#")#" file="#loc.report_path#" />
+  
+  <cfset Copy_File_ini = createObject('component','#application.cfcPrefix#UtilityFile').Copy_File('#loc.local_run_path#\Schema.ini','#loc.run_path#\Schema.ini',1)/>
+  <cfset Copy_File = createObject('component','#application.cfcPrefix#UtilityFile').Copy_File('#loc.local_run_path#\#loc.report_file_name#.txt','#loc.run_path#\#loc.report_file_name#.txt',1)/>
+
+    
+    <!---
+    <cfset loc.schmini_path = "#loc.run_path#\Schema.ini" />
+    <cffile action="write" output="#loc.schmini#" file="#loc.schmini_path#" nameconflict="overwrite" />
+    <cfset loc.report_path = "#loc.run_path#\#loc.report_file_name#.txt" />
+    <cffile action="write" output="#ListChangeDelims(loc.cl,"#chr(9)#")#" file="#loc.report_path#" nameconflict="overwrite" />
+    --->
+<!--- new WAF file movement end ----> 
+    
+    <cfreturn loc>
+    
+  </cffunction>
+
+  <cffunction name="qQuery" access="remote">
+    <cfargument name="frmStruct" required="true" default="">
+    <cfargument name="sel_top" required="true" default="0">
+    <cfargument name="qryMode" required="true" default="">
+
+    <cfset var sel_cols = qGetCols( arguments.frmStruct )>
+    <cfset var loc = structnew()>
+
+    <cfif qryMode eq "Download">
+      <cfset loc.schmini = getSchemaIni("#sel_cols.download_cols#")>
+    </cfif>
+    <cfset loc.empty_qry = false>
+    <cfquery name="loc.sel_lic_no_pay" datasource="#application.sys_ds#">
+      <cfif qryMode eq "Counts">
+        WITH T AS (
+      </cfif>
+
+      SELECT DISTINCT
+      <cfif val(sel_top)>
+        TOP #sel_top#
+      </cfif>
+      #preservesinglequotes(sel_cols.selForScreen)#
+
+      <cfif qryMode eq "Download">
+        INTO #application.wh_ds#.dbo.#loc.schmini.temp_table_name#
+      </cfif>
+
+      FROM  mem_member_master mast
+      left join mem_membership_window win on mast.pk_mem_member_master = win.K_mem_member_master
+      left join brk_broker brk on brk.PK_brk_broker = win.K_brk_broker
+      left join brk_broker_type btype on btype.PK_brk_broker_type = brk.K_brk_broker_type
+      left join BRK_entity_contract c on c.PK_BRK_entity_contract = win.K_BRK_entity_contract
+      left join BRK_entity_contract_line_item li on li.PK_brk_entity_contract_line_item = win.k_brk_entity_contract_line_item
+      left join mem_membership_cms_compData cmpdata on cmpdata.pk_mem_membership_cms_compData = win.k_mem_membership_cms_compData
+      left join cms_contract cmsc on cmsc.pk_cms_contract = cmpdata.k_cms_contract
+      left join pln_type pt on pt.pk_pln_type = cmpdata.k_pln_plan_type__prior
+      left join pln_plan p on p.pk_pln_plan = cmpdata.k_pln_plan
+      <cfif structkeyExists( arguments.frmStruct , 'includeUplines' ) and val( arguments.frmStruct.includeUplines ) eq 1 >
+      left join window_uplines_flat wuf on wuf.k_mem_membership_window = win.pk_mem_membership_window
+      left join brk_broker ub0 on wuf.k_brk_broker_entity_relation__0 = ub0.pk_brk_broker
+      left join brk_broker ub1 on wuf.k_brk_broker_entity_relation__1 = ub1.pk_brk_broker
+      left join brk_broker ub2 on wuf.k_brk_broker_entity_relation__2 = ub2.pk_brk_broker
+      left join brk_broker ub3 on wuf.k_brk_broker_entity_relation__3 = ub3.pk_brk_broker
+      left join brk_broker ub4 on wuf.k_brk_broker_entity_relation__4 = ub4.pk_brk_broker
+      left join brk_broker ub5 on wuf.k_brk_broker_entity_relation__5 = ub5.pk_brk_broker
+      left join brk_broker ub6 on wuf.k_brk_broker_entity_relation__6 = ub6.pk_brk_broker
+      left join brk_broker ub7 on wuf.k_brk_broker_entity_relation__7 = ub7.pk_brk_broker
+      left join brk_broker ub8 on wuf.k_brk_broker_entity_relation__8 = ub8.pk_brk_broker
+      left join brk_broker ub9 on wuf.k_brk_broker_entity_relation__9 = ub9.pk_brk_broker
+      left join brk_broker ub10 on wuf.k_brk_broker_entity_relation__10 = ub10.pk_brk_broker
+      </cfif>
+      /*
+      inner join geo_county gc on gc.pk_geo_county = win.k_geo_county
+      inner join geo_state gs on gs.PK_geo_state = gc.K_geo_state
+      */
+      <cfif structKeyExists( ARGUMENTS.frmStruct , 'find_missing_transactions' ) AND ARGUMENTS.frmStruct.find_missing_transactions eq 1 AND structKeyExists( ARGUMENTS.frmStruct , 'missing_transactions' ) >
+        left join (
+          select distinct has_transactions, K_MEM_membership_window 
+          from BRK_commission
+          where cid = <cfqueryparam value="#application.cid#" cfsqltype="cf_sql_integer">
+        ) tranq on tranq.has_transactions = 1 and tranq.K_MEM_membership_window = win.pK_MEM_membership_window
+      </cfif>
+
+      where mast.cid = <cfqueryparam value="#application.cid#" cfsqltype="cf_sql_integer">
+      
+    
+      <cfif structKeyExists( frmStruct , 'find_missing_win' ) AND len(frmStruct.find_missing_win)>
+        and 
+        (
+          win.PK_mem_membership_window is null
+        )
+        <cfset loc.empty_qry = false>
+      <cfelse>
+        and 
+        (
+          win.PK_mem_membership_window is not null
+        )
+      </cfif>
+
+      <cfif structKeyExists( frmStruct , 'find_missing_rep' ) AND len(frmStruct.find_missing_rep)>
+        and 
+        (
+          win.K_brk_broker is null
+        )
+        <cfset loc.empty_qry = false>
+      </cfif>
+      <cfif structKeyExists( frmStruct , 'find_missing_win_contract' ) AND len(frmStruct.find_missing_win_contract)>
+        and 
+        (
+          win.K_BRK_entity_contract is null
+        )
+        <cfset loc.empty_qry = false>
+      </cfif>
+      <cfif structKeyExists( frmStruct , 'find_missing_cms_compRpt' ) AND len(frmStruct.find_missing_cms_compRpt)>
+        and 
+        (
+            win.k_mem_membership_cms_compData is null
+        )
+        <cfset loc.empty_qry = false>
+      </cfif>
+
+      <cfif structKeyExists( frmStruct , 'K_BRK_entity_contract' ) AND len(frmStruct.K_BRK_entity_contract)>
+        and 
+        (
+          win.K_BRK_entity_contract IN (<cfqueryparam value="#frmStruct.K_BRK_entity_contract#" list="True" cfsqltype="cf_sql_varchar">)
+        )
+        <cfset loc.empty_qry = false>
+      </cfif>
+
+      <cfif isdate(frmStruct.member_application_date_start)>
+        and win.application_date >= <cfqueryparam value="#frmStruct.member_application_date_start#" cfsqltype="cf_sql_date">
+        <cfset loc.empty_qry = false>
+      </cfif>
+      <cfif isdate(frmStruct.member_application_date_end)>
+        and win.application_date <= <cfqueryparam value="#frmStruct.member_application_date_end#" cfsqltype="cf_sql_date">
+        <cfset loc.empty_qry = false>
+      </cfif>
+    
+      <cfif isdate(frmStruct.cms_acceptance_date_start)>
+        and win.acceptance_date >= <cfqueryparam value="#frmStruct.cms_acceptance_date_start#" cfsqltype="cf_sql_date">
+        <cfset loc.empty_qry = false>
+      </cfif>
+      <cfif isdate(frmStruct.cms_acceptance_date_end)>
+        and win.acceptance_date <= <cfqueryparam value="#frmStruct.cms_acceptance_date_end#" cfsqltype="cf_sql_date">
+        <cfset loc.empty_qry = false>
+      </cfif>
+    
+
+      <cfif isdate(frmStruct.member_enrolled_date_start)>
+        and win.start_date >= <cfqueryparam value="#frmStruct.member_enrolled_date_start#" cfsqltype="cf_sql_date">
+        <cfset loc.empty_qry = false>
+      </cfif>
+      <cfif isdate(frmStruct.member_enrolled_date_end)>
+        and win.start_date <= <cfqueryparam value="#frmStruct.member_enrolled_date_end#" cfsqltype="cf_sql_date">
+        <cfset loc.empty_qry = false>
+      </cfif>
+    
+      <cfif isdate(frmStruct.member_terminated_date_start)>
+        and win.end_date >= <cfqueryparam value="#frmStruct.member_terminated_date_start#" cfsqltype="cf_sql_date">
+        <cfset loc.empty_qry = false>
+      </cfif>
+      <cfif isdate(frmStruct.member_terminated_date_end)>
+        and win.end_date <= <cfqueryparam value="#frmStruct.member_terminated_date_end#" cfsqltype="cf_sql_date">
+        <cfset loc.empty_qry = false>
+      </cfif>
+      
+      <cfif structKeyExists( ARGUMENTS.frmStruct , 'disenrolled' ) and ARGUMENTS.frmStruct.disenrolled eq 1>
+        and win.end_date is null
+        <cfset loc.empty_qry = false/>
+      <cfelseif structKeyExists( ARGUMENTS.frmStruct , 'disenrolled' ) and ARGUMENTS.frmStruct.disenrolled eq 2>
+        and ( DATEDIFF( m , win.start_date , win.end_date ) > 3 )
+        <cfset loc.empty_qry = false/>
+      <cfelseif structKeyExists( ARGUMENTS.frmStruct , 'disenrolled' ) and ARGUMENTS.frmStruct.disenrolled eq 3>
+        and ( DATEDIFF( m , win.start_date , win.end_date ) <= 3 )
+        and win.start_date <> win.end_date
+
+        <cfset loc.empty_qry = false/>
+      <cfelseif structKeyExists( ARGUMENTS.frmStruct , 'disenrolled' ) and ARGUMENTS.frmStruct.disenrolled eq 5>
+        and ( DATEDIFF( m , win.start_date , win.end_date ) < 3 )
+        or (
+        
+        )
+        and win.start_date <> win.end_date
+
+        <!--- add in rapid dis exception logic 
+        --->
+        and not exists(SELECT pk_mem_membership_window_rde
+                from  mem_membership_window_rde
+                WHERE mem_membership_window_rde.k_mem_membership_window = win.pk_mem_membership_window
+                    and [is_valid_exception]=1)
+        and not (month(win.start_date) >= 10 and month(win.end_date) <= 2)
+
+        <cfset loc.empty_qry = false/>
+      </cfif>
+      
+      <cfif structKeyExists( ARGUMENTS.frmStruct , 'find_missing_transactions' ) AND ARGUMENTS.frmStruct.find_missing_transactions eq 1 AND structKeyExists( ARGUMENTS.frmStruct , 'missing_transactions' ) >
+        <cfif NOT isNumeric( ARGUMENTS.frmStruct.missing_transactions ) >
+          <cfset ARGUMENTS.frmSTruct.missing_transactions = 20 />
+        </cfif>
+        /* left join above brk_commission */
+        AND tranq.has_transactions is null
+        AND DATEDIFF( d , win.start_date , GETDATE() ) > <cfqueryparam value="#ARGUMENTS.frmStruct.missing_transactions#" cfsqltype="cf_sql_integer" />
+        /*
+        AND win.start_date <= GETDATE()
+        AND (
+          win.start_date <> win.end_date
+          OR win.end_date IS NULL )
+        */
+        <cfset loc.empty_qry = false />     
+      </cfif>
+
+      <cfif len(frmStruct.member_id)>
+        and 
+        (
+          mast.member_id = <cfqueryparam value="#frmStruct.member_id#" cfsqltype="cf_sql_varchar">
+        )
+        <cfset loc.empty_qry = false>
+      </cfif>
+      
+      <cfif len(frmStruct.broker_id)>
+        and 
+        (
+          brk.broker_id = <cfqueryparam value="#frmStruct.broker_id#" cfsqltype="cf_sql_varchar">
+        )
+        <cfset loc.empty_qry = false>
+      </cfif>
+      
+      <cfif structKeyExists( frmStruct , 'K_BRK_broker_type' ) AND len(frmStruct.K_BRK_broker_type)>
+        and 
+        (
+          brk.K_BRK_broker_type IN (<cfqueryparam value="#frmStruct.K_BRK_broker_type#" list="true" cfsqltype="cf_sql_varchar">)
+        )
+        <cfset loc.empty_qry = false>
+      </cfif>
+      
+      <cfif len( frmStruct.broker_name ) >
+        and
+        (
+          brk.name LIKE <cfqueryparam value="%#frmStruct.broker_name#%" cfsqltype="cf_sql_char" />
+        )
+        <cfset loc.empty_qry = false>
+      </cfif>
+      
+      <cfif loc.empty_qry>
+        and 1=2
+      </cfif>
+      
+      <cfif qryMode eq "Counts">
+        )
+        SELECT #sel_cols.selForCount# FROM T
+        #sel_cols.groupForCount#
+      </cfif>
+
+      <cfif qryMode neq "Counts">
+        #sel_cols.orderBy#
+      </cfif>
+    </cfquery>
+    <!--- EVOLVESPM-1440 --->
+      <cfif qryMode eq "Download">
+    <cfquery name="loc.create_file" datasource="#application.sys_ds#">      
+        INSERT INTO OpenDataSource('Microsoft.ACE.OLEDB.12.0'
+              , 'Data Source = "#replaceNoCase(loc.schmini.run_path,"\\#loc.schmini.db_server_unc#\","c:\")#\"; Extended Properties = "Text;HDR=NO;"')...#loc.schmini.report_file_name###txt
+        ([#listFirst(loc.schmini.cl)#]<cfloop list="#listRest(loc.schmini.cl)#" index="loc.c">,[#loc.c#]</cfloop>)      
+        SELECT  [#listFirst(loc.schmini.cl)#]<cfloop list="#listRest(loc.schmini.cl)#" index="loc.c">,[#loc.c#]</cfloop>
+        FROM  #application.source_file_server#.#application.wh_ds#.dbo.#loc.schmini.temp_table_name#
+    </cfquery>
+    <cfquery name="del_temp_data" datasource="#application.sys_ds#">
+        DROP TABLE #application.wh_ds#.dbo.#loc.schmini.temp_table_name#
+    </cfquery>
+      </cfif>   
+
+    <cfif qryMode neq "Download">
+      <cfreturn loc.sel_lic_no_pay>
+    <cfelseif qryMode eq "Download">
+
+<!--- new WAF file movement start ---->
+      <cfset Copy_File = createObject('component','#application.cfcPrefix#UtilityFile').Copy_File('#loc.schmini.run_path#\#loc.schmini.report_file_name#.txt','#loc.schmini.local_run_path#\#loc.schmini.report_file_name#.txt',1)/>
+      <cfset Delete_File = createObject('component','#application.cfcPrefix#UtilityFile').Delete_File('#loc.schmini.run_path#','#loc.schmini.report_file_name#.txt')/>
+  
+      <cfset loc.zippath = "#loc.schmini.local_run_path#\#loc.schmini.report_file_name#.zip" />
+      <cfzip action="zip" file="#loc.zippath#" overwrite="true" source="#loc.schmini.local_run_path#\#loc.schmini.report_file_name#.txt" />
+      <cffile action="delete" file="#loc.schmini.local_run_path#\#loc.schmini.report_file_name#.txt" />
+      
+      <!--- NETWORK
+      <cfset loc.zippath = "#loc.schmini.run_path#\#loc.schmini.report_file_name#.zip" />
+      <cfzip action="zip" file="#loc.zippath#" overwrite="true" source="#loc.schmini.run_path#\#loc.schmini.report_file_name#.txt" />
+      <cffile action="delete" file="#loc.schmini.run_path#\#loc.schmini.report_file_name#.txt" />
+      --->
+<!--- new WAF file movement end ---->
+      <cfreturn loc.zippath />
+    </cfif>
+  </cffunction>
+</cfcomponent>
