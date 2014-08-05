@@ -1,9 +1,7 @@
 <cfinclude template = "../cf_includes/cf_PRE_template_include.htm">
 <cfparam name = "display_mode" default = "">
 
-<!---
-created:8/4/2014 barebones page
---->
+<!--- WGG created:8/4/2014 barebones page returning member ids with no search criteria --->
 
 <!--- include functions --->
 <cfif not isdefined('standard_form_top_includes')>
@@ -14,7 +12,10 @@ created:8/4/2014 barebones page
 <cfset form_file="list_member_groups.htm">
 <cfset list_file="list_member_groups.htm">
 
-
+<cfset default_query_name = "">
+<cfset default_variables = "
+  member_id
+  ">
 
 <!--- page title --->
 <cfset page_title="Enrollments by Member WG TEST">
@@ -28,6 +29,83 @@ Search for enrollments in specific member groups, representative contracts and d
 <cfinclude template = "../templates/cf_in_page_info.htm">
 
 
+<cfquery name="q_member_enrollments_mem_dedupe" datasource="#application.sys_ds#">
+  WITH members (pk_mem_member_master, pk_mem_membership_window)
+  AS(
+    SELECT TOP 100 pk_mem_member_master -- take out top 100 for full results!
+      ,(
+        SELECT TOP 1 pk_mem_membership_window FROM mem_membership_window
+        WHERE pk_mem_member_master = k_mem_member_master
+        AND end_date = 
+        (SELECT max(isnull(end_date,'12/31/2099'))
+        FROM mem_membership_window
+        WHERE pk_mem_member_master = k_mem_member_master
+      )
+    ) as win_key
+  
+    FROM mem_member_master
+  
+  )
+  SELECT
+    brk.PK_BRK_broker
+    ,btype.name as rep_typ
+    ,brk.name
+    ,brk.first_name as broker_first_name
+    ,brk.last_name as broker_last_name
+    ,brk.broker_id
+    ,c.name as contract
+    ,CONVERT( VARCHAR , win.application_date , 101 ) AS application_date
+    ,CONVERT( VARCHAR , win.acceptance_date , 101 ) AS CMSAccDate
+    ,CONVERT( VARCHAR , win.start_date , 101 ) as elig_start_date
+    ,CONVERT( VARCHAR , win.end_date , 101 ) as elig_end_date
+    ,li.name as line_item_name
+    ,mast.hicnbr as hic
+    ,mast.member_id
+    ,mast.first_name as mem_first_name
+    ,mast.last_name as mem_last_name
+    ,cmsc.contractid as CMSCont
+    ,win.cycle_start_year as CYStart
+    ,p.code as PlanCode
+    ,pt.name as PriorPlan
+  FROM mem_membership_window win 
+    inner join members on members.pk_mem_membership_window = win.pk_mem_membership_window
+    left join mem_member_master mast on mast.pk_mem_member_master = win.K_mem_member_master
+    left join brk_broker brk on brk.PK_brk_broker = win.K_brk_broker
+    left join brk_broker_type btype on btype.PK_brk_broker_type = brk.K_brk_broker_type
+    left join BRK_entity_contract c on c.PK_BRK_entity_contract = win.K_BRK_entity_contract
+    left join BRK_entity_contract_line_item li on li.PK_brk_entity_contract_line_item = win.k_brk_entity_contract_line_item
+    left join mem_membership_cms_compData cmpdata on cmpdata.pk_mem_membership_cms_compData = win.k_mem_membership_cms_compData
+    left join cms_contract cmsc on cmsc.pk_cms_contract = cmpdata.k_cms_contract
+    left join pln_type pt on pt.pk_pln_type = cmpdata.k_pln_plan_type__prior
+    left join pln_plan p on p.pk_pln_plan = cmpdata.k_pln_plan
+</cfquery>
+
+
+<table id="cpy" class="list_table scrolling" scroll_height="1500" width=98%>
+  <cfif q_member_enrollments_mem_dedupe.RecordCount EQ 0>
+    <tr class="list_even_odd">
+          <td align="center" colspan="9">
+        0 Records Returned
+      </td>
+    </tr>
+  </cfif>
+    
+  <cfset toggle = 1>
+    <cfoutput query = "q_member_enrollments_mem_dedupe">
+      <cfif toggle gt 0>
+        <cfset even_odd = "even">
+      <cfelse>
+        <cfset even_odd = "odd">
+      </cfif>
+      
+      <cfset toggle = toggle*-1>
+        <tr class="list_even_odd">
+          <td align="center" width="115">
+            #member_id#
+          </td>
+        </tr>
+    </cfoutput>
+    
 <!--- uncomment to do scrolling table 
 --->
 <script>
